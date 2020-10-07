@@ -15,7 +15,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        System.out.println("PULL");
     }
     
 }
