@@ -17,6 +17,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     public static void main(String[] args) {
         System.out.println("PULL");
         System.out.println("PUSH 2");
+        System.out.println("PRUEBA SOLICITADA POR HENRRRRY ");
     }
     
 }
