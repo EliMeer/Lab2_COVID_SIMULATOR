@@ -11,6 +11,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -72,54 +79,81 @@ public class GUI {
                  GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
                  vGroup.addGap(10);
         
-        
-        
-        
-        
-        
+          
         
         //PANEL DERECHO
         JPanel rightPanel = new JPanel();
         rightPanel.setPreferredSize(new Dimension(700, 600));
         
-        rightPanel.add(new MyGraphics());
-        
-        
-        
+        rightPanel.add(new ShapePanel(sim));
+              
         leftPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
         rightPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
-
-
-
-
-        
+     
         pane.add(leftPanel, "West");
         pane.add(rightPanel, "East");
         
-        
-        //PRUEBA PINTAR CIRCULOS
-        int[][] m = new int[7][6];
-        m[2][2] = 1;
-        rightPanel.add(new MyGraphics());
+       
         
            
     }
     
-    public static class MyGraphics extends JComponent {
+    static class ShapePanel extends JPanel {
 
-        private static final long serialVersionUID = 1L;
+    
+        
+   
+    private Dimension dim = new Dimension(690, 600);
+    private final ArrayList<Shape> shapes;
 
-        MyGraphics() {
-            setPreferredSize(new Dimension(700, 600));
-        }
+    
+    
+    public ShapePanel(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
+        Shape nodo1 = new Ellipse2D.Double(50, 100, 100, 100);
+        Shape nodo2 = new Ellipse2D.Double(260, 100, 100, 100);
+        Shape nodo3 = new Ellipse2D.Double(200, 260, 100, 100);
+        shapes = new ArrayList<>(); 
+        
+    //    for(int i=1; i<=sim.numNodosEntero; i++){
+    //        shapes.add(new Ellipse2D.Double(260, 100, 100, 100));
+    //    }
+        
+          
+        shapes.add(nodo1);
+        shapes.add(nodo2);
+        shapes.add(nodo3);
+        
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+                for (Shape s : shapes) { 
+                    
+                    //Revisa si se hizo clic dentro del área del círculo
+                    if (s.contains(me.getPoint())) {                      
+                        
+                        System.out.println(s.getClass().getName());
+  
+                    }
+                }
+            }
+        });
+    }
 
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-       //   g.fillRect(0, 0, 700, 600);
-            g.drawString("Hello",40,40);  
+    @Override
+    protected void paintComponent(Graphics grphcs) {
+        super.paintComponent(grphcs);
+        Graphics2D g2d = (Graphics2D) grphcs;
+        for (Shape s : shapes) {
+            g2d.draw(s);
         }
     }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return dim;
+    }  
+}
     
     public static void showGUI(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
         
