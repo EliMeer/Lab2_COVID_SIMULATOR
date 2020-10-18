@@ -5,8 +5,10 @@
  */
 package lab2_henrycaicedo_breynner.hurtado_elianavelasquez;
 
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.UIManager;
+
 
 /**
  *
@@ -14,12 +16,16 @@ import javax.swing.UIManager;
  */
 public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
+    Iteracion firstIteracion;
+
     public Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez() {
-        
-        
+        firstIteracion = null;
     }
     
+    
+    
     public static void main(String[] args) {
+        Scanner sc = new Scanner (System.in);
         
         Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim = new Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez();
         
@@ -32,16 +38,27 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
        GUI gui = new GUI();
        gui.showGUI(sim);
         
-        System.out.println("PULL");
-        System.out.println("PUSH 2");
-        System.out.println("PRUEBA SOLICITADA POR HENRRRRY ");
+        System.out.println("Digite el número de nodos:");
+        numNodosEntero = sc.nextInt();
+        System.out.println(numNodosEntero);
+        
+        //Lee info (num nodos, mascarilla, etc)
+        
+        //Simulación
+        
     }
     
-    static int numNodosEntero = 7;
+    
+    static int numNodosEntero;
     static int[] listaX = new int[numNodosEntero];
     int[] listaY = new int[numNodosEntero];
     
-    public void UbicarNodoEnX(int numNodosEntero){
+    public void crearSimulacion(Iteracion firstIteracion){
+        
+        
+    }
+    
+    public void ubicarNodoEnX(int numNodosEntero){
         
     double numNodos = (double)numNodosEntero;
     double anchoD = numNodos*1.5; 
@@ -51,7 +68,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
     }
     
-    public void UbicarNodoEnY(int numNodosEntero){      
+    public void ubicarNodoEnY(int numNodosEntero){      
     int alto = numNodosEntero;
     int randomNum;
     do{
