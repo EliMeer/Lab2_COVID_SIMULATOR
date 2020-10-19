@@ -17,9 +17,12 @@ import javax.swing.UIManager;
  */
 public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
+    final static int anchoSim=680;
+    final static int altoSim=510;
     static Iteracion firstIteracion;
     static int numNodos, anchoCuadricula, altoCuadricula;
     static int[][] matriz;
+    
 
     
 
@@ -32,15 +35,9 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
         Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim = new Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez();
         
-        //GUI
-        try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception useDefault) {
-                }
-       GUI gui = new GUI();
-       gui.showGUI(sim);
         
-        sim.numNodos =9;
+        
+        sim.numNodos = 100; //Máximo 100
         calcProporcion(numNodos);
         System.out.println("Ancho: "+anchoCuadricula);
         System.out.println("Alto: "+altoCuadricula);
@@ -62,8 +59,15 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
         
       
-        escribirMatriz();
+       // dibujarMatriz();
 
+        //GUI
+        try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception useDefault) {
+                }
+       GUI gui = new GUI();
+       gui.showGUI(sim);
 
         
     }
@@ -91,13 +95,13 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         int posX, posY;
         
         do{
-        posY = x.nextInt(anchoCuadricula-1) + 1;
-        posX = y.nextInt(altoCuadricula-1) + 1;
-        
+        posY = x.nextInt(anchoCuadricula) + 1;
+        posX = y.nextInt(altoCuadricula) + 1;
         System.out.println("Calculando coordenadas");
         }while(espacioDisponible(posX, posY)==false);
         
         System.out.println("("+posX+","+posY+")");
+        
         matriz[posX][posY] = id;
         coordenadas[0]=posX;
         coordenadas[1]=posY;
@@ -119,7 +123,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
     
-    public static void escribirMatriz(){
+    public static void dibujarMatriz(){
                  
             for(int i=1; i<=altoCuadricula; i++){
                 for(int j=1; j<=anchoCuadricula; j++){
@@ -140,14 +144,17 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
     public static void crearPrimeraIteracion() {
         firstIteracion = new Iteracion();
-        int radio = anchoCuadricula/680/4*3;
+        int radio = anchoSim/anchoCuadricula/4*3;
         for(int i = 1; i<=numNodos; i++){
             int[] coordenadas = ubicarNodo(i);      
             
-              int x = coordenadas[0];
-              int y = coordenadas[1];
-       
-              firstIteracion.addNodo(new Nodo(null, true, true, x, y, radio));
+              double x = (coordenadas[0]-1)*((double)anchoSim/(double)anchoCuadricula);
+              double y = (coordenadas[1]-1)*((double)anchoSim/(double)anchoCuadricula);
+              
+              
+              
+              
+              firstIteracion.addNodo(new Nodo(null, true, true, y, x, radio));
             
         }
         
