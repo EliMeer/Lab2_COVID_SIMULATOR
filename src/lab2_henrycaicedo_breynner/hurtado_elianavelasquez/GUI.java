@@ -13,6 +13,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,11 +36,14 @@ import javax.swing.SwingConstants;
  * @author Usuario
  */
 public class GUI {
+
         final static int anchoSim=680;
         final static int altoSim=510;
     
     
     private static void addComponentsToPane(Container pane, Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
+        
+        
         
         //PANEL IZQUIERDO  
         JPanel leftPanel = new JPanel();
@@ -109,31 +113,35 @@ public class GUI {
 
     private Dimension dim = new Dimension(anchoSim, altoSim);
     private final ArrayList<Nodo> nodos;
+    Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim;
+
  
-    public ShapePanel(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
-        
-        
-        
+    public ShapePanel(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez simulador) {
+         
+        sim=simulador;
         Nodo nodo1 = new Nodo(null, true, true, 0, 0, 100);
         nodos = new ArrayList<>();  
         nodos.add(nodo1);
 
-   /*     addMouseListener(new MouseAdapter() {
-            Nodo p = sim.firstIteracion.firstNodo;
+        addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
+                Nodo p = sim.firstIteracion.firstNodo;
                 do{                  
                     //Revisa si se hizo clic dentro del área del círculo
                     if (p.contains(me.getPoint())) {                      
-                        System.out.println(p.id);
+                        System.out.println(p.id+": ("+p.x+","+p.y+")");
+                        System.out.println(p.height+"-"+p.width);
                     }
                     p = p.nextNodo;
+                    
                 }while(p!=null);             
             }        
         });
-       */ 
-        
+       
+        /*
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
@@ -146,10 +154,9 @@ public class GUI {
                 }
             }        
         });
+        */
         
-                
         setBackground(Color.WHITE);
-        setBorder(BorderFactory.createLineBorder(Color.red));
         
         /*
         addMouseListener( new MouseAdapter() {
@@ -170,13 +177,18 @@ public class GUI {
     
     @Override
     protected void paintComponent(Graphics grphcs) {
-        
-        
         super.paintComponent(grphcs);
         Graphics2D g2d = (Graphics2D) grphcs;
-        for (Nodo n : nodos) {
-            g2d.draw(n);
-        }
+        Nodo p = sim.firstIteracion.firstNodo;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        do{
+             //g2d.drawRect((int)p.x, (int)p.y, (int)p.height, (int)p.height);
+             g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+             //g2d.draw(p);
+             p = p.nextNodo;
+        }while(p!=null);
+        
+
     }
 
     @Override
