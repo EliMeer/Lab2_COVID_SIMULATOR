@@ -6,6 +6,7 @@
 package lab2_henrycaicedo_breynner.hurtado_elianavelasquez;
 
 import java.awt.geom.Ellipse2D;
+import java.util.Random;
 
 /**
  *
@@ -17,14 +18,17 @@ public class Nodo extends Ellipse2D.Double{
     boolean tapabocas;
     boolean infectado;
     int id;
+    static int contId=1;
 
-    public Nodo(Nodo nextNodo, boolean tapabocas, boolean infectado, double x, double y, double radio, int id) {
+    public Nodo(Nodo nextNodo, boolean tapabocas, boolean infectado, double x, double y, double radio) {
         super(x, y, radio, radio);
         this.nextNodo = nextNodo;
         this.tapabocas = tapabocas;
         this.infectado = infectado;
-        this.id = id;
+        this.id = contId++;
     }
+    
+    
 
     
     
