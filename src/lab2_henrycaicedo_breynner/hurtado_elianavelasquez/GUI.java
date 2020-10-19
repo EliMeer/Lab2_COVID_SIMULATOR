@@ -35,8 +35,8 @@ import javax.swing.SwingConstants;
  * @author Usuario
  */
 public class GUI {
-        final static int ancho=677;
-        final static int alto=508;
+        final static int anchoSim=680;
+        final static int altoSim=510;
     
     
     private static void addComponentsToPane(Container pane, Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
@@ -83,9 +83,9 @@ public class GUI {
         
         //PANEL DERECHO
         JPanel rightPanel = new JPanel();
-        rightPanel.setPreferredSize(new Dimension(701, 600));
+        rightPanel.setPreferredSize(new Dimension(704, 602));
         JPanel margen = new JPanel();
-        margen.setPreferredSize(new Dimension(689, 520));
+        margen.setPreferredSize(new Dimension(692, 522));
         margen.setBackground(Color.WHITE);
         margen.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         rightPanel.add(margen);
@@ -99,7 +99,7 @@ public class GUI {
         
         //Paginación
         JPanel paginacion = new JPanel();
-        paginacion.setPreferredSize(new Dimension(700, 69));
+        paginacion.setPreferredSize(new Dimension(704, 69));
         paginacion.setBorder(BorderFactory.createLineBorder(Color.gray));
         rightPanel.add(paginacion, BorderLayout.SOUTH);
 
@@ -107,15 +107,33 @@ public class GUI {
     
     static class ShapePanel extends JPanel {
 
-    private Dimension dim = new Dimension(ancho, alto);
+    private Dimension dim = new Dimension(anchoSim, altoSim);
     private final ArrayList<Nodo> nodos;
  
     public ShapePanel(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
-        Nodo nodo1 = new Nodo(null, true, true, 0, 0, 100, 1);
-        nodos = new ArrayList<>(); 
-                
+        
+        
+        
+        Nodo nodo1 = new Nodo(null, true, true, 0, 0, 100);
+        nodos = new ArrayList<>();  
         nodos.add(nodo1);
 
+   /*     addMouseListener(new MouseAdapter() {
+            Nodo p = sim.firstIteracion.firstNodo;
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+                do{                  
+                    //Revisa si se hizo clic dentro del área del círculo
+                    if (p.contains(me.getPoint())) {                      
+                        System.out.println(p.id);
+                    }
+                    p = p.nextNodo;
+                }while(p!=null);             
+            }        
+        });
+       */ 
+        
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
@@ -128,9 +146,12 @@ public class GUI {
                 }
             }        
         });
+        
+                
         setBackground(Color.WHITE);
-        //setBorder(BorderFactory.createLineBorder(Color.red));
-
+        setBorder(BorderFactory.createLineBorder(Color.red));
+        
+        /*
         addMouseListener( new MouseAdapter() {
             public void mouseEntered( MouseEvent e ) {
                 super.mouseEntered(e);
@@ -143,11 +164,14 @@ public class GUI {
                 }
             }
         });
+        */
     }
 
     
     @Override
     protected void paintComponent(Graphics grphcs) {
+        
+        
         super.paintComponent(grphcs);
         Graphics2D g2d = (Graphics2D) grphcs;
         for (Nodo n : nodos) {
@@ -160,6 +184,7 @@ public class GUI {
         return dim;
     }  
 }
+    
     
     public static void showGUI(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
         
