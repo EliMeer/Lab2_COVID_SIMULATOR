@@ -13,11 +13,22 @@ public class Iteracion {
     int num;
     Iteracion nextIteracion;
     Nodo firstNodo;
+    static int numIteracion=1;
+    
+    public Iteracion() {
+        this.num = numIteracion++;
+    }
 
-    public Iteracion(int num, Iteracion nextIteracion, Nodo firstNodo) {
-        this.num = num;
-        this.nextIteracion = nextIteracion;
-        this.firstNodo = firstNodo;
+    void addNodo(Nodo nodo) {
+        if(firstNodo == null){
+            firstNodo = nodo;
+        }else{
+            Nodo p = firstNodo;
+            while(p.nextNodo != null){
+                p=p.nextNodo;
+            }
+            p.nextNodo = nodo;
+        }
     }
     
     
