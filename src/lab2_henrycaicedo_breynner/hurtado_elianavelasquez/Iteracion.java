@@ -30,6 +30,15 @@ public class Iteracion {
             p.nextNodo = nodo;
         }
     }
+
+    Nodo getNodo(int i) {
+        Nodo p = firstNodo;
+        
+        while(p.id != i & p!=null){
+            p = p.nextNodo;
+        }
+        return p;
+    }
     
     
     
