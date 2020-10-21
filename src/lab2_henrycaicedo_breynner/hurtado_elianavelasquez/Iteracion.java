@@ -33,8 +33,7 @@ public class Iteracion {
 
     Nodo getNodo(int i) {
         Nodo p = firstNodo;
-        
-        while(p.id != i & p!=null){
+        while(p.id != i && p.nextNodo!=null){
             p = p.nextNodo;
         }
         return p;
