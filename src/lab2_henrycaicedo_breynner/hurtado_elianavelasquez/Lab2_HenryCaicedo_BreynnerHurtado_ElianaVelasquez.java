@@ -22,8 +22,8 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     static Iteracion firstIteracion;
     static int numNodos, anchoCuadricula, altoCuadricula;
     static int[][] matriz;
-    
 
+   
     
 
     public Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez() {
@@ -37,7 +37,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
         
         
-        sim.numNodos = 16; //Máximo 100
+        sim.numNodos = 32; //Máximo 100
         calcProporcion(numNodos);
         System.out.println("Ancho: "+anchoCuadricula);
         System.out.println("Alto: "+altoCuadricula);
@@ -46,11 +46,11 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
 
         crearPrimeraIteracion();
         System.out.println(firstIteracion.num);
+        
         crearEnlacesPrimarios();
-        unirDosColumnasEnlazadas(1,2);
-        unirDosColumnasEnlazadas(2,3);
-        unirDosColumnasEnlazadas(3,4);
+        crearEnlacesSecundarios();
        
+    
         
         addIteracion();
         addIteracion();
@@ -151,7 +151,12 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     public static void crearPrimeraIteracion() {
         firstIteracion = new Iteracion();
         int diametro = anchoSim/anchoCuadricula/5*4;
-        for(int i = 1; i<=numNodos; i++){
+        
+        if(numNodos<11){
+            diametro = anchoSim/anchoCuadricula/4*2;
+        }
+        
+        for(int i=1; i<=numNodos; i++){
             int[] coordenadas = ubicarNodo(i);      
             
               double x = (coordenadas[0]-1)*((double)anchoSim/(double)anchoCuadricula) + ((anchoSim/anchoCuadricula)-diametro)/2;
@@ -218,8 +223,36 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
     public static void crearEnlacesSecundarios(){
+        int numColumnas=anchoCuadricula/4;
         
+        for(int i=1; i<numColumnas; i++){
+            if(!columnaVacia(i)){
+            int j=i+1;
+            while(columnaVacia(j)==true && j<=numColumnas){
+                j++;
+            }
+            
+            if(!columnaVacia(j) && !columnaVacia(i)){
+            unirDosColumnasEnlazadas(i,j);
+            }
+            }   
+        }      
     }
+    
+     private static boolean columnaVacia(int numColumna) {
+        boolean vacia=true;
+        
+        for(int i=1; i<=altoCuadricula; i++){ 
+            for(int j=1*numColumna*4-3; j<=4*numColumna; j++){             
+                if(matriz[i][j]!=0){
+                    vacia=false;       
+                }           
+            }
+        }     
+        return vacia;
+    }
+    
+
     
     
     public static void enlazarColumna(int numColumna){
