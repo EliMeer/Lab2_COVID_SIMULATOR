@@ -133,10 +133,18 @@ public class GUI {
                     //Revisa si se hizo clic dentro del área del círculo
                     if (p.contains(me.getPoint())) {                      
                         System.out.println(p.id+": ("+p.x+","+p.y+")");
-                        System.out.println(p.height+"-"+p.width);
+                        System.out.print("Enlaces: ");
+                            if(p.firstEnlace != null){
+                                Enlace e = p.firstEnlace;
+                                    do{
+                                        System.out.print(e.nodo.id+", "); 
+                                        e = e.nextEnlace;
+                                    }while(e!=null);
+                                     System.out.println();   
+                                }
+                                          
                     }
-                    p = p.nextNodo;
-                    
+                    p = p.nextNodo;                 
                 }while(p!=null);             
             }        
         });
@@ -155,7 +163,8 @@ public class GUI {
             }        
         });
         */
-        
+        //setBorder(BorderFactory.createLineBorder(Color.red));
+
         setBackground(Color.WHITE);
         
         /*
@@ -181,13 +190,41 @@ public class GUI {
         Graphics2D g2d = (Graphics2D) grphcs;
         Nodo p = sim.firstIteracion.firstNodo;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+         do{
+            //Dibujar aristas
+            if(p.firstEnlace != null){
+            Enlace e = p.firstEnlace;
+            do{
+                g2d.drawLine((int)(p.x+p.height/2), (int)(p.y+p.height/2), (int)(e.nodo.x+p.height/2), (int)(e.nodo.y+p.height/2)); 
+                e = e.nextEnlace;
+            }while(e!=null);                  
+            }
+            
+            p = p.nextNodo;
+            
+        }while(p!=null);
+        
+                p = sim.firstIteracion.firstNodo;
+
+         
         do{
              //g2d.drawRect((int)p.x, (int)p.y, (int)p.height, (int)p.height);
+             g2d.setColor(Color.white);
              g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+             g2d.setColor(Color.black);
+             g2d.setStroke(new java.awt.BasicStroke(1));
+             g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+             //g2d.drawString(p.getId(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
              //g2d.draw(p);
+             
+     
+  
+            
              p = p.nextNodo;
         }while(p!=null);
         
+       
 
     }
 
