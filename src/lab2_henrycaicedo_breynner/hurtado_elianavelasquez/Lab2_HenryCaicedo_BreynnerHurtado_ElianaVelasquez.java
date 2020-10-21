@@ -37,7 +37,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
         
         
-        sim.numNodos = 100; //Máximo 100
+        sim.numNodos = 16; //Máximo 100
         calcProporcion(numNodos);
         System.out.println("Ancho: "+anchoCuadricula);
         System.out.println("Alto: "+altoCuadricula);
@@ -46,20 +46,26 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
 
         crearPrimeraIteracion();
         System.out.println(firstIteracion.num);
+        crearEnlacesPrimarios();
+        unirDosColumnasEnlazadas(1,2);
+        unirDosColumnasEnlazadas(2,3);
+        unirDosColumnasEnlazadas(3,4);
+       
         
-        
         addIteracion();
         addIteracion();
         addIteracion();
         addIteracion();
-
-        System.out.println(firstIteracion.firstNodo.nextNodo.nextNodo.nextNodo.id);
-        System.out.println(firstIteracion.firstNodo.nextNodo.nextNodo.nextNodo.x);
-        System.out.println(firstIteracion.firstNodo.nextNodo.nextNodo.nextNodo.y);
-        
         
       
-       // dibujarMatriz();
+        dibujarMatriz();
+        System.out.println("(0,1): "+matriz[0][1]);
+        System.out.println("(1,1): "+matriz[1][1]);
+        System.out.println("(2,1): "+matriz[2][1]);
+        System.out.println("(3,1): "+matriz[3][1]);
+        System.out.println("(3,4): "+matriz[3][4]);
+        
+        
 
         //GUI
         try {
@@ -144,17 +150,44 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
     public static void crearPrimeraIteracion() {
         firstIteracion = new Iteracion();
-        int radio = anchoSim/anchoCuadricula/4*3;
+        int diametro = anchoSim/anchoCuadricula/5*4;
         for(int i = 1; i<=numNodos; i++){
             int[] coordenadas = ubicarNodo(i);      
             
-              double x = (coordenadas[0]-1)*((double)anchoSim/(double)anchoCuadricula);
-              double y = (coordenadas[1]-1)*((double)anchoSim/(double)anchoCuadricula);
+              double x = (coordenadas[0]-1)*((double)anchoSim/(double)anchoCuadricula) + ((anchoSim/anchoCuadricula)-diametro)/2;
+              double y = (coordenadas[1]-1)*((double)anchoSim/(double)anchoCuadricula) + ((anchoSim/anchoCuadricula)-diametro)/2;
+              
+              Random r = new Random();
+              int resultado = r.nextInt(10) + 1;
+              System.out.println("Resultado: "+resultado);
               
               
               
+              switch(resultado){
+                  case 1: x=x-diametro/10;
+                  break;
+                  case 2: x=x+diametro/10;
+                  break;
+                  case 3: y=y-diametro/10;
+                  break;
+                  case 4: x=x-diametro/8;
+                  break;
+                  case 5: x=x+diametro/8;
+                  break;
+                  case 6: y=y-diametro/8;
+                  break;
+                  case 7: x=x-diametro/8;
+                  break;
+                  case 8: x=x+diametro/8;
+                  break;
+                  case 9: y=y-diametro/8;
+                  break;
+                  default: 
+                  break;
+              }
               
-              firstIteracion.addNodo(new Nodo(null, true, true, y, x, radio));
+              
+              firstIteracion.addNodo(new Nodo(null, true, true, y, x, diametro));
             
         }
         
@@ -175,13 +208,79 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
     }
     
-    public static Nodo addNodo(Nodo nextNodo, boolean tapabocas, boolean infectado){
-        Nodo nodo=null;
+    public static void crearEnlacesPrimarios(){
         
+        int numColumnas=anchoCuadricula/4;
         
-        
-        return nodo;
+        for(int i=1; i<=numColumnas; i++){
+                    enlazarColumna(i);
+        }
     }
+    
+    public static void crearEnlacesSecundarios(){
+        
+    }
+    
+    
+    public static void enlazarColumna(int numColumna){
+        Nodo p=null;
+        Nodo q=null;  
+            for(int i=1; i<=altoCuadricula; i++){ 
+            for(int j=1*numColumna*4-3; j<=4*numColumna; j++){             
+                if(matriz[i][j]!=0){
+                    if(p==null){
+                        p=firstIteracion.getNodo(matriz[i][j]);
+                    }else{         
+                        q=firstIteracion.getNodo(matriz[i][j]);
+                        p.addEnlace(q);
+                        q.addEnlace(p);
+                        p=q;           
+                    }
+                }           
+            }
+        }
+        
+    }
+    
+    public static void unirDosColumnasEnlazadas(int columnaIzquierda, int columnaDerecha){
+        int menorDistancia=(anchoCuadricula-1)+(altoCuadricula-1);
+        int distancia, puntoA=0, puntoB=0;
+        Nodo p = null;
+        Nodo q = null;
+        
+        for(int i=1; i<=altoCuadricula; i++){ 
+            for(int j=1*columnaIzquierda*4-3; j<=4*columnaIzquierda; j++){             
+                if(matriz[i][j]!=0){
+                    
+                    for(int k=1; k<=altoCuadricula; k++){ 
+                        for(int m=1*columnaDerecha*4-3; m<=4*columnaDerecha; m++){             
+                            if(matriz[k][m]!=0){
+                                System.out.println("Punto A: "+matriz[i][j]);
+                                System.out.println("Punto B: "+matriz[k][m]);
+                                distancia = Math.abs(k-i)+Math.abs(m-j)-1;   
+                                System.out.println("Distancia: "+distancia);
+                                if(distancia<menorDistancia){
+                                    menorDistancia = distancia;
+                                    puntoA = matriz[i][j];
+                                    puntoB = matriz[k][m];
+                                    
+                                }
+                            }           
+                        }
+                    }   
+                }           
+            }
+        }
+        
+        p=firstIteracion.getNodo(puntoA);
+        q=firstIteracion.getNodo(puntoB);
+        
+        p.addEnlace(q);
+        q.addEnlace(p);
+        
+    }
+    
+    
       
 }
 
