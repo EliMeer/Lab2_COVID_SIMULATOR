@@ -37,7 +37,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
         
         
-        sim.numNodos = 32; //Máximo 100
+        sim.numNodos = 12; //Máximo 100
         calcProporcion(numNodos);
         System.out.println("Ancho: "+anchoCuadricula);
         System.out.println("Alto: "+altoCuadricula);
@@ -72,6 +72,8 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 } catch (Exception useDefault) {
                 }
+        
+        
        GUI gui = new GUI();
        gui.showGUI(sim);
 
@@ -150,11 +152,11 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
     public static void crearPrimeraIteracion() {
         firstIteracion = new Iteracion();
-        int diametro = anchoSim/anchoCuadricula/5*4;
+        int diametro = anchoSim/anchoCuadricula/5*3;
         
-        if(numNodos<11){
-            diametro = anchoSim/anchoCuadricula/4*2;
-        }
+      //  if(numNodos<11){
+      //      diametro = anchoSim/anchoCuadricula/4*2;
+      //  }
         
         for(int i=1; i<=numNodos; i++){
             int[] coordenadas = ubicarNodo(i);      
@@ -237,6 +239,14 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
             }
             }   
         }      
+    }
+    
+    public static void crearEnlacesTerciarios(){
+        
+    }
+    
+    public static void crearEnlacesCuaternarios(){
+        
     }
     
      private static boolean columnaVacia(int numColumna) {
