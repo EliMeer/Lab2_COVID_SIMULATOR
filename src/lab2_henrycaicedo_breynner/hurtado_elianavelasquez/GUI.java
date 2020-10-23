@@ -37,6 +37,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import static lab2_henrycaicedo_breynner.hurtado_elianavelasquez.Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez.calcProporcion;
+import static lab2_henrycaicedo_breynner.hurtado_elianavelasquez.Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez.crearEnlacesPrimarios;
+import static lab2_henrycaicedo_breynner.hurtado_elianavelasquez.Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez.crearEnlacesSecundarios;
+import static lab2_henrycaicedo_breynner.hurtado_elianavelasquez.Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez.crearPrimeraIteracion;
+import static lab2_henrycaicedo_breynner.hurtado_elianavelasquez.Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez.dibujarMatriz;
+import static lab2_henrycaicedo_breynner.hurtado_elianavelasquez.Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez.numNodos;
 
 /**
  *
@@ -46,9 +52,13 @@ public class GUI {
 
         final static int anchoSim=680;
         final static int altoSim=510;
+        public static ShapePanel shapePanel2;
+        static final Color colorInfectado = new Color(255,160,160);
+        static final Color colorSano = new Color(191, 186, 255);
     
     
     private static void addComponentsToPane(Container pane, Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
+        
         
         
         //PANEL IZQUIERDO  
@@ -121,7 +131,15 @@ public class GUI {
                 JButton jbMenos10 = new JButton("<<");
                 JLabel jlbNumNodos = new JLabel(Integer.toString(sim.numNodos));
                 JButton jbMas1 = new JButton(">");
-                JButton jbMas10 = new JButton(">>");            
+                JButton jbMas10 = new JButton(">>");
+                
+                JLabel jlbFuenteBotones = new JLabel();
+                jlbFuenteBotones.setFont(new Font("Arial", Font.BOLD, 12));
+                jbMenos1.setFont(jlbFuenteBotones.getFont());
+                jbMenos10.setFont(jlbFuenteBotones.getFont());
+                jbMas1.setFont(jlbFuenteBotones.getFont());
+                jbMas10.setFont(jlbFuenteBotones.getFont());
+
                  
                 //ACTION LISTENERS            
                 jbMenos1.addActionListener(new ActionListener() {
@@ -162,7 +180,7 @@ public class GUI {
                 
                 
                 
-                jlbNumNodos.setFont(new Font("Arial", Font.BOLD, 18));
+                jlbNumNodos.setFont(new Font("Arial", Font.BOLD, 20));
                 jlbNumNodos.setHorizontalAlignment(JLabel.CENTER);
                 jlbNumNodos.setVerticalAlignment(JLabel.CENTER);
                               
@@ -206,18 +224,18 @@ public class GUI {
                // JPanel nodoPanel = new JPanel(new GridLayout(1,5));
                JLabel jlbFuente = new JLabel();
                jlbFuente.setFont(new Font("Arial", Font.PLAIN, 17));
-               JRadioButton rbSinMascarilla = new JRadioButton("Nadie usa mascarilla");
                JRadioButton rbConMascarilla = new JRadioButton("Todos usan mascarilla");
-               JRadioButton rbAleatorio = new JRadioButton("El uso de mascarilla es aleatorio");
-               rbSinMascarilla.setFont(jlbFuente.getFont());
+               JRadioButton rbSinMascarilla = new JRadioButton("Nadie usa mascarilla");
+               JRadioButton rbAleatorio = new JRadioButton("Aleatorio");
                rbConMascarilla.setFont(jlbFuente.getFont());
+               rbSinMascarilla.setFont(jlbFuente.getFont());
                rbAleatorio.setFont(jlbFuente.getFont());
-               ButtonGroup bG = new ButtonGroup();
-               bG.add(rbSinMascarilla);
+               ButtonGroup bG = new ButtonGroup();      
                bG.add(rbConMascarilla);
+               bG.add(rbSinMascarilla); 
                bG.add(rbAleatorio);
-               contenidoMascarilla.add(rbSinMascarilla);
                contenidoMascarilla.add(rbConMascarilla);
+               contenidoMascarilla.add(rbSinMascarilla);
                contenidoMascarilla.add(rbAleatorio);
                
                //Botón de iniciar
@@ -252,7 +270,10 @@ public class GUI {
         margen.setBorder(BorderFactory.createLineBorder(Color.lightGray));
         rightPanel.add(margen);
         
-        margen.add(new ShapePanel(sim));
+        ShapePanel shapePanel = new ShapePanel(sim.firstIteracion);
+
+        
+        margen.add(shapePanel);
               
         rightPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
      
@@ -264,15 +285,50 @@ public class GUI {
         paginacion.setPreferredSize(new Dimension(704, 69));
         paginacion.setBorder(BorderFactory.createLineBorder(Color.gray));
         rightPanel.add(paginacion, BorderLayout.SOUTH);
-
+        
+        //ACTION LISTENER BOTÓN INICIAR SIMULACIÓN
         jbIniciar.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent e) {
-                                    if(sim.numNodos>=2){
-                                    sim.numNodos--;                       
+                                    
+                                   // if(rbConMascarilla.isSelected() || rbConMascarilla.isSelected() || rbAleatorio.isSelected()){
+                                    
+                                    if(rbConMascarilla.isSelected()){
+                                        sim.opcionMascarilla=0;
                                     }
-
-                                jlbNumNodos.setText(Integer.toString(sim.numNodos));    
-                                }
+                                    if(rbSinMascarilla.isSelected()){
+                                        sim.opcionMascarilla=1;
+                                    }
+                                    
+                                    if(rbAleatorio.isSelected()){
+                                        sim.opcionMascarilla=2;
+                                    }
+                                    
+                                    
+                                    sim.iniciar();
+                                    
+                                    margen.remove(shapePanel);
+                                    
+                                    if(shapePanel2 != null){
+                                        margen.remove(shapePanel2);
+                                    }
+                                    
+                                    
+                                    shapePanel2 = new ShapePanel(sim.firstIteracion);
+                                    if(shapePanel2.getParent() == margen){
+                                        System.out.println("ENTRÓ AL CONDICIONAAAAAAL");
+                                        margen.remove(shapePanel2);
+                                    }else{
+                                        System.out.println("ENTRÓ AL ELSEEEEEEEEE");
+                                    }
+                                    margen.add(shapePanel2);
+                                    dibujarMatriz();
+                                    margen.revalidate();
+                                    margen.repaint();
+                                    shapePanel.revalidate();
+                                    shapePanel.repaint();
+                                    
+                                    }
+                              //  }
                             }); 
         
     }
@@ -284,23 +340,20 @@ public class GUI {
         
 
     private Dimension dim = new Dimension(anchoSim, altoSim);
-    private final ArrayList<Nodo> nodos;
-    Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim;
+    Iteracion iteracion;
 
  
-    public ShapePanel(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez simulador) {
+    public ShapePanel(Iteracion iteracion) {
          
-        sim=simulador;
-        Nodo nodo1 = new Nodo(null, true, true, 0, 0, 100);
-        nodos = new ArrayList<>();  
-        nodos.add(nodo1);
+        this.iteracion=iteracion;
+
 
         addMouseListener(new MouseAdapter() {
             
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
-                Nodo p = sim.firstIteracion.firstNodo;
+                Nodo p = iteracion.firstNodo;
                 do{                  
                     //Revisa si se hizo clic dentro del área del círculo
                     if (p.contains(me.getPoint())) {                      
@@ -326,7 +379,7 @@ public class GUI {
             @Override
             public void mouseEntered( MouseEvent me ) {
                 super.mouseEntered(me);
-                Nodo p = sim.firstIteracion.firstNodo;
+                Nodo p = iteracion.firstNodo;
                 do{                  
                     //Revisa si se hizo clic dentro del área del círculo
                     if (p.contains(me.getX(), me.getY())) {                      
@@ -345,7 +398,7 @@ public class GUI {
                 public void mouseMoved(MouseEvent me) {
                     System.out.println("lol");
                     
-                        Nodo p = sim.firstIteracion.firstNodo;
+                        Nodo p = iteracion.firstNodo;
                     
                         int mx = me.getX();
                         int my = me.getY();
@@ -404,7 +457,7 @@ public class GUI {
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
         Graphics2D g2d = (Graphics2D) grphcs;
-        Nodo p = sim.firstIteracion.firstNodo;
+        Nodo p = iteracion.firstNodo;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setStroke(new java.awt.BasicStroke(1));
          do{
@@ -414,30 +467,31 @@ public class GUI {
             do{
                 if(p.id<e.nodo.id){
                 g2d.drawLine((int)(p.x+p.height/2), (int)(p.y+p.height/2), (int)(e.nodo.x+p.height/2), (int)(e.nodo.y+p.height/2)); 
-                }
-                e = e.nextEnlace;
-                
-                
+                }      
+                e = e.nextEnlace;        
             }while(e!=null);                  
-            }
-            
+            }        
             p = p.nextNodo;
             
-        }while(p!=null);
-        
-                p = sim.firstIteracion.firstNodo;
-
-         
+        }while(p!=null);        
+                p = iteracion.firstNodo;
+   
         do{
-             //g2d.drawRect((int)p.x, (int)p.y, (int)p.height, (int)p.height);
-             g2d.setColor(Color.white);
+             if(p.infectado==true){
+             g2d.setColor(colorInfectado);
+             }else{
+                 g2d.setColor(colorSano);
+             }
              g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
              g2d.setColor(Color.black);
-             g2d.setStroke(new java.awt.BasicStroke(2));
+             g2d.setStroke(new java.awt.BasicStroke(3));
+             if(p.tapabocas==true){
              g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
-             //g2d.drawString(p.getId(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
-             //g2d.draw(p);
-             
+             }
+                          //g2d.setColor(Color.red);
+
+            //g2d.drawString(p.getId(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+
      
   
             
