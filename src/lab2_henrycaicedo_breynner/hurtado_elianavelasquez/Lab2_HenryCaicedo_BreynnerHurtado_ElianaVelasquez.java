@@ -20,8 +20,11 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     final static int anchoSim=680;
     final static int altoSim=510;
     static Iteracion firstIteracion;
-    static int numNodos, anchoCuadricula, altoCuadricula;
+    static int numNodos = 15, anchoCuadricula, altoCuadricula, opcionMascarilla=1;
     static int[][] matriz;
+
+    
+    
 
    
     
@@ -34,37 +37,22 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         Scanner sc = new Scanner (System.in);
         
         Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim = new Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez();
+               
         
         
+   //     System.out.println("Ancho: "+anchoCuadricula);
+   //     System.out.println("Alto: "+altoCuadricula);
+   //     System.out.println(anchoCuadricula);
         
-        sim.numNodos = 12; //Máximo 100
+        
         calcProporcion(numNodos);
-        System.out.println("Ancho: "+anchoCuadricula);
-        System.out.println("Alto: "+altoCuadricula);
-        System.out.println(anchoCuadricula);
         sim.matriz = new int[altoCuadricula+1][anchoCuadricula+1];
-
-        crearPrimeraIteracion();
-        System.out.println(firstIteracion.num);
-        
+        crearPrimeraIteracion();    
         crearEnlacesPrimarios();
-        crearEnlacesSecundarios();
-       
-    
+        crearEnlacesSecundarios();      
         
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
         
-      
         dibujarMatriz();
-        System.out.println("(0,1): "+matriz[0][1]);
-        System.out.println("(1,1): "+matriz[1][1]);
-        System.out.println("(2,1): "+matriz[2][1]);
-        System.out.println("(3,1): "+matriz[3][1]);
-        System.out.println("(3,4): "+matriz[3][4]);
-        
         
 
         //GUI
@@ -81,7 +69,14 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
   
-    
+    public void iniciar(){
+                                    Nodo.contId=1;
+                                    calcProporcion(numNodos);
+                                    matriz = new int[altoCuadricula+1][anchoCuadricula+1];
+                                    crearPrimeraIteracion();    
+                                    crearEnlacesPrimarios();
+                                    crearEnlacesSecundarios();
+    }
     
     public static void calcProporcion(int numNodos){
         if(numNodos%5 != 0){
@@ -152,7 +147,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
     public static void crearPrimeraIteracion() {
         firstIteracion = new Iteracion();
-        int diametro = anchoSim/anchoCuadricula/5*3;
+        int diametro = anchoSim/anchoCuadricula/4*3;
         
       //  if(numNodos<11){
       //      diametro = anchoSim/anchoCuadricula/4*2;
@@ -193,31 +188,68 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                   break;
               }
               
-              
-              firstIteracion.addNodo(new Nodo(null, true, true, y, x, diametro));
+              switch(opcionMascarilla){
+                  //Todos usan tapabocas
+                  case 0: firstIteracion.addNodo(new Nodo(null, true, false, y, x, diametro));
+                  break;
+                  //Nadie usa tapabocas
+                  case 1: firstIteracion.addNodo(new Nodo(null, false, false, y, x, diametro));
+                      System.out.println("SIN MASCARILLAAAAAAAAAAAAA");
+                  break;
+                  //Uso aleatorio de tapabocas
+                  default: Random a = new Random();
+                           int num = a.nextInt(2) + 0;
+                           if(num==1){
+                               firstIteracion.addNodo(new Nodo(null, true, false, y, x, diametro));
+                           }else{
+                               firstIteracion.addNodo(new Nodo(null, false, false, y, x, diametro));
+                           }
+                  break;
+              }
             
+             
+              
+              
         }
+        
+         //Escoger el primer infectado aleatoriamente
+              Random covid = new Random();
+              int primerInfectado = covid.nextInt(numNodos+1) + 1;
+              firstIteracion.getNodo(primerInfectado).infectado=true;
+              
         
         
     }
     
     public static void addIteracion(){
-       
+            
             Iteracion p;
             p=firstIteracion;
             while(p.nextIteracion!=null){
                 p=p.nextIteracion;
             }
             p.nextIteracion = new Iteracion();
-            System.out.println(p.nextIteracion.num);          
+            
+            Iteracion nuevaIteracion = p.nextIteracion;
+            
+            duplicarNodos(nuevaIteracion);
+            
         
         
         
     }
     
-    public static void crearEnlacesPrimarios(){
+    private static void duplicarNodos(Iteracion nuevaIteracion) {
+        Iteracion anteriorIteracion = firstIteracion.getIteracion(nuevaIteracion.num-1);
+        Iteracion prueba = new Iteracion();
         
+        
+    }
+    
+    public static void crearEnlacesPrimarios(){
+        System.out.println("Creando enlaces primarios");
         int numColumnas=anchoCuadricula/4;
+        System.out.println("numColumnas: "+numColumnas);
         
         for(int i=1; i<=numColumnas; i++){
                     enlazarColumna(i);
@@ -241,24 +273,29 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         }      
     }
     
-    public static void crearEnlacesTerciarios(){
-        
-    }
+
     
-    public static void crearEnlacesCuaternarios(){
-        
-    }
-    
+    //DEBO REVISAR ESTO
      private static boolean columnaVacia(int numColumna) {
         boolean vacia=true;
         
+        
+        for(int j=1*numColumna*4-3; j<=4*numColumna; j++){
         for(int i=1; i<=altoCuadricula; i++){ 
-            for(int j=1*numColumna*4-3; j<=4*numColumna; j++){             
+                         
                 if(matriz[i][j]!=0){
-                    vacia=false;       
-                }           
+                    vacia=false;     
+                    
+                }         
             }
         }     
+        
+        if(vacia==false){
+            System.out.println("Columna #"+numColumna+" no vacía.");
+        }else{
+             System.out.println("Columna #"+numColumna+" vacía.");
+        }
+        
         return vacia;
     }
     
@@ -273,8 +310,10 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                 if(matriz[i][j]!=0){
                     if(p==null){
                         p=firstIteracion.getNodo(matriz[i][j]);
+                        System.out.println("p es igual a "+p.getId());
                     }else{         
                         q=firstIteracion.getNodo(matriz[i][j]);
+                        System.out.println("q es igual a "+q.getId());
                         p.addEnlace(q);
                         q.addEnlace(p);
                         p=q;           
@@ -298,10 +337,10 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                     for(int k=1; k<=altoCuadricula; k++){ 
                         for(int m=1*columnaDerecha*4-3; m<=4*columnaDerecha; m++){             
                             if(matriz[k][m]!=0){
-                                System.out.println("Punto A: "+matriz[i][j]);
-                                System.out.println("Punto B: "+matriz[k][m]);
+                           //     System.out.println("Punto A: "+matriz[i][j]);
+                           //     System.out.println("Punto B: "+matriz[k][m]);
                                 distancia = Math.abs(k-i)+Math.abs(m-j)-1;   
-                                System.out.println("Distancia: "+distancia);
+                           //     System.out.println("Distancia: "+distancia);
                                 if(distancia<menorDistancia){
                                     menorDistancia = distancia;
                                     puntoA = matriz[i][j];
