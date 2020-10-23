@@ -38,6 +38,16 @@ public class Iteracion {
         }
         return p;
     }
+
+    Iteracion getIteracion(int num) {
+        Iteracion p = this;
+        while(p.num != num && p.nextIteracion!=null){
+            p = p.nextIteracion;
+        }
+        return p;
+    }
+
+
     
     
     
