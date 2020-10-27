@@ -20,14 +20,15 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     final static int anchoSim=680;
     final static int altoSim=510;
     static Iteracion firstIteracion;
-    static int numNodos = 15, anchoCuadricula, altoCuadricula, opcionMascarilla=1;
+    static int numNodos = 20, anchoCuadricula, altoCuadricula, opcionMascarilla=2;
     static int[][] matriz;
+    static int mostrarIteracion=1;
 
     
     
-
-   
     
+    
+ 
 
     public Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez() {
         firstIteracion = null;     
@@ -37,23 +38,40 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         Scanner sc = new Scanner (System.in);
         
         Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim = new Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez();
-               
-        
-        
-   //     System.out.println("Ancho: "+anchoCuadricula);
-   //     System.out.println("Alto: "+altoCuadricula);
-   //     System.out.println(anchoCuadricula);
-        
+                 
         
         calcProporcion(numNodos);
         sim.matriz = new int[altoCuadricula+1][anchoCuadricula+1];
         crearPrimeraIteracion();    
         crearEnlacesPrimarios();
-        crearEnlacesSecundarios();      
-        
-        
+        crearEnlacesSecundarios(); 
+        serializarEnlaces();
         dibujarMatriz();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+        addIteracion();
+
+  
         
+        /*
+        System.out.println(firstIteracion.nextIteracion.firstNodo.nextNodo.nextNodo.getId());
+        System.out.println("ID: "+firstIteracion.nextIteracion.firstNodo.nextNodo.nextNodo.getId());
+        System.out.println("Primer enlace: "+firstIteracion.nextIteracion.firstNodo.nextNodo.nextNodo.firstEnlace.num);
+        System.out.println("Primer enlace: "+firstIteracion.nextIteracion.firstNodo.nextNodo.nextNodo.firstEnlace.nodo.getId());
+        System.out.println("Segundo enlace: "+firstIteracion.nextIteracion.firstNodo.nextNodo.nextNodo.firstEnlace.nextEnlace.nodo.getId());
+        */
+        
+       // System.out.println("Distancia entre "+firstIteracion.firstNodo.getId()+" y "+firstIteracion.firstNodo.nextNodo.getId()+": "+calcularDistancia(firstIteracion.firstNodo,firstIteracion.firstNodo.nextNodo));
+        
+       
 
         //GUI
         try {
@@ -70,21 +88,25 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
   
     public void iniciar(){
-                                    Nodo.contId=1;
-                                    calcProporcion(numNodos);
-                                    matriz = new int[altoCuadricula+1][anchoCuadricula+1];
-                                    crearPrimeraIteracion();    
-                                    crearEnlacesPrimarios();
-                                    crearEnlacesSecundarios();
+                                mostrarIteracion=1;
+                                calcProporcion(numNodos);
+                                matriz = new int[altoCuadricula+1][anchoCuadricula+1];
+                                crearPrimeraIteracion();    
+                                crearEnlacesPrimarios();
+                                crearEnlacesSecundarios(); 
+                                serializarEnlaces();
+                                dibujarMatriz();
+                                addIteracion();
     }
     
     public static void calcProporcion(int numNodos){
-        if(numNodos%5 != 0){
-            anchoCuadricula = (numNodos/5+1)*4;
-            altoCuadricula = (numNodos/5+1)*3;
+        int densidadNodos=5;
+        if(numNodos%densidadNodos != 0){
+            anchoCuadricula = (numNodos/densidadNodos+1)*4;
+            altoCuadricula = (numNodos/densidadNodos+1)*3;
         }else{
-            anchoCuadricula = (numNodos/5)*4;
-            altoCuadricula = (numNodos/5)*3;
+            anchoCuadricula = (numNodos/densidadNodos)*4;
+            altoCuadricula = (numNodos/densidadNodos)*3;
         }   
     }
     
@@ -100,11 +122,8 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         do{
         posY = x.nextInt(anchoCuadricula) + 1;
         posX = y.nextInt(altoCuadricula) + 1;
-        System.out.println("Calculando coordenadas");
         }while(espacioDisponible(posX, posY)==false);
-        
-        System.out.println("("+posX+","+posY+")");
-        
+              
         matriz[posX][posY] = id;
         coordenadas[0]=posX;
         coordenadas[1]=posY;
@@ -113,13 +132,10 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
 
     public static boolean espacioDisponible(int posX, int posY) {
-        System.out.println("Verificando disponibilidad de ("+posX+","+posY+")");
         boolean disponible = true;      
         if(matriz[posX][posY]!=0){
-            System.out.println("No disponible");
             disponible = false;
         }else{
-            System.out.println("Disponible");
         }
         
         return disponible;
@@ -161,7 +177,6 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
               
               Random r = new Random();
               int resultado = r.nextInt(10) + 1;
-              System.out.println("Resultado: "+resultado);
               
               
               
@@ -190,19 +205,18 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
               
               switch(opcionMascarilla){
                   //Todos usan tapabocas
-                  case 0: firstIteracion.addNodo(new Nodo(null, true, false, y, x, diametro));
+                  case 0: firstIteracion.addNodo(new Nodo(null, true, false, y, x, diametro, i));
                   break;
                   //Nadie usa tapabocas
-                  case 1: firstIteracion.addNodo(new Nodo(null, false, false, y, x, diametro));
-                      System.out.println("SIN MASCARILLAAAAAAAAAAAAA");
+                  case 1: firstIteracion.addNodo(new Nodo(null, false, false, y, x, diametro, i));
                   break;
                   //Uso aleatorio de tapabocas
                   default: Random a = new Random();
                            int num = a.nextInt(2) + 0;
                            if(num==1){
-                               firstIteracion.addNodo(new Nodo(null, true, false, y, x, diametro));
+                               firstIteracion.addNodo(new Nodo(null, true, false, y, x, diametro, i));
                            }else{
-                               firstIteracion.addNodo(new Nodo(null, false, false, y, x, diametro));
+                               firstIteracion.addNodo(new Nodo(null, false, false, y, x, diametro, i));
                            }
                   break;
               }
@@ -214,7 +228,8 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
          //Escoger el primer infectado aleatoriamente
               Random covid = new Random();
-              int primerInfectado = covid.nextInt(numNodos+1) + 1;
+              int primerInfectado = covid.nextInt(numNodos) + 1;
+              System.out.println("Primer infectado: "+primerInfectado);
               firstIteracion.getNodo(primerInfectado).infectado=true;
               
         
@@ -222,37 +237,239 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
     public static void addIteracion(){
-            
-            Iteracion p;
-            p=firstIteracion;
+            Iteracion p = firstIteracion;     
             while(p.nextIteracion!=null){
                 p=p.nextIteracion;
             }
-            p.nextIteracion = new Iteracion();
+            Iteracion nuevaIteracion = new Iteracion();
             
-            Iteracion nuevaIteracion = p.nextIteracion;
+            p.nextIteracion = nuevaIteracion;           
+            duplicarUltimaIteracion(nuevaIteracion);  
             
-            duplicarNodos(nuevaIteracion);
+            ejecutarVirusDos(nuevaIteracion);
             
+               
+    }
+    
+    private static void duplicarUltimaIteracion(Iteracion nuevaIteracion) {
+        Iteracion anteriorIteracion = firstIteracion.getIteracion(nuevaIteracion.num-1);
         
+        Nodo firstNodoNuevaIteracion = new Nodo(null, anteriorIteracion.firstNodo.tapabocas, anteriorIteracion.firstNodo.infectado,
+                                        anteriorIteracion.firstNodo.x, anteriorIteracion.firstNodo.y, anteriorIteracion.firstNodo.diametro,
+                                        anteriorIteracion.firstNodo.id);
+        nuevaIteracion.firstNodo=firstNodoNuevaIteracion;
+        
+        Nodo p = firstNodoNuevaIteracion;
+        
+        //Duplicar nodos
+        for(int i=2; i<=anteriorIteracion.getNumNodos(); i++){
+            Nodo nodoOriginal = anteriorIteracion.getNodo(i);
+            Nodo nodoCopia = new Nodo(null, nodoOriginal.tapabocas, nodoOriginal.infectado,
+                              nodoOriginal.x, nodoOriginal.y, nodoOriginal.diametro, nodoOriginal.id);         
+            p.nextNodo = nodoCopia;
+            p=p.nextNodo;
+        }
+        
+        //Duplicar enlaces
+        Nodo q = anteriorIteracion.firstNodo;
+        for(int i=1; i<=firstIteracion.getNumNodos(); i++){
+            
+            System.out.println("=============================");
+            System.out.println("Duplicando enlaces de "+i);
+            System.out.println("Número de enlaces: "+q.getNumEnlaces());
+            System.out.println("Buscando nodo "+i);
+
+            Nodo m = nuevaIteracion.getNodo(i);
+         
+            
+            //Enlace enlaceOriginal = q.getEnlace(1);
+            
+            for(int j=1; j<=q.getNumEnlaces(); j++){
+                Enlace enlaceOriginal = q.getEnlace(j);
+                Enlace enlaceCopia = new Enlace(nuevaIteracion.getNodo(enlaceOriginal.nodo.id));
+                enlaceCopia.num = enlaceOriginal.num;
+                m.addEnlace(enlaceCopia);
+            }
+  
+             q = q.nextNodo; 
+             
+        }
         
         
     }
     
-    private static void duplicarNodos(Iteracion nuevaIteracion) {
-        Iteracion anteriorIteracion = firstIteracion.getIteracion(nuevaIteracion.num-1);
-        Iteracion prueba = new Iteracion();
-        
+    private static void ejecutarVirusDos(Iteracion nuevaIteracion) {
+       
+        for(int i=1; i<=nuevaIteracion.getNumNodos(); i++){
+            
+            Nodo transmisor = nuevaIteracion.getNodo(i);
+            
+            //Si está infectado, se recorren sus nodos adyacentes, sino, se ignora y se pasa al siguiente.
+            //Igualmente se verifica si se infectó en esta iteración
+            if(transmisor.infectado && transmisor.yaFueRecorrido==false){
+                
+                for(int j=1; j<=transmisor.getNumEnlaces(); j++){
+                   
+                    Nodo receptor = transmisor.getEnlace(j).nodo;
+                    
+                    //Si este enlace no está infectado, se procede a evaluar las probabilidades
+                    if(receptor.infectado == false){
+                        
+                        receptor.infectado=true;
+                        receptor.yaFueRecorrido=true;
+                        
+                    }
+                    
+                        
+                    
+                }
+                
+            }
+       
+        }
+        /*
+        Nodo p = nuevaIteracion.firstNodo;
+        do{
+            p.yaFueRecorrido=true;
+            p=p.nextNodo;
+        }while(p!=null);
+        */
         
     }
+
+    
+    private static void ejecutarVirus(Iteracion nuevaIteracion) {
+          
+        for(int i=1; i<=nuevaIteracion.getNumNodos(); i++){
+            
+            Nodo transmisor = nuevaIteracion.getNodo(i);
+            
+            if(transmisor.infectado==true && transmisor.yaFueRecorrido==false){      
+                     
+                for(int j=1; j<=transmisor.getNumEnlaces(); j++){
+                    
+                    Nodo receptor = transmisor.getEnlace(j).nodo;      
+                    
+                    if(receptor.infectado==false){
+                        Random r = new Random();
+                        int probabilidad = r.nextInt(10) + 1;
+                        System.out.println("Probabilidad: "+probabilidad);
+                        int distancia = calcularDistancia(transmisor, receptor);
+                        if(distancia>2){
+                            if(transmisor.tapabocas==false && receptor.tapabocas==false){
+                                if(probabilidad<=8){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }
+                            if(transmisor.tapabocas==false && receptor.tapabocas==true){
+                                if(probabilidad<=4){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }
+                            if(transmisor.tapabocas==true && receptor.tapabocas==false){
+                                if(probabilidad<=3){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }
+                            if(transmisor.tapabocas==true && receptor.tapabocas==true){
+                                if(probabilidad<=2){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }                      
+                        }else{
+                            if(transmisor.tapabocas==false && receptor.tapabocas==false){
+                                if(probabilidad<=9){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }
+                            if(transmisor.tapabocas==false && receptor.tapabocas==true){
+                                if(probabilidad<=6){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }
+                            if(transmisor.tapabocas==true && receptor.tapabocas==false){
+                                if(probabilidad<=40){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }
+                            if(transmisor.tapabocas==true && receptor.tapabocas==true){
+                                if(probabilidad<=30){
+                                    receptor.infectado=true;
+                                    System.out.println(receptor.id+" Infectado");
+                                }
+                            }                 
+                        }  
+                        receptor.yaFueRecorrido = true; 
+                    } 
+                    
+                }              
+            }      
+        }
+        
+        /*
+          Nodo p = nuevaIteracion.firstNodo;
+          do{
+              p.yaFueRecorrido = false;
+              p = p.nextNodo;
+          }while(p!=null);
+          */
+    }
+    
+    private static int calcularDistancia(Nodo transmisor, Nodo receptor) {
+        int distancia;
+        int i=1, j=1, k=1, m=1;
+        int puntoA=transmisor.getId(), puntoB=receptor.getId();
+        int aVertical=0, aHorizontal=0, bVertical=0, bHorizontal=0;
+        boolean aEncontrado=false, bEncontrado=false;
+
+        while(i<=altoCuadricula && aEncontrado==false){
+
+            j=1;
+            while(j<=anchoCuadricula && aEncontrado==false){  
+                if(matriz[i][j]==puntoA){
+                    aVertical=i;
+                    aHorizontal=j;
+                    aEncontrado=true;
+                }
+                j++;
+            }
+            i++;
+        }
+        
+        while(k<=altoCuadricula && bEncontrado==false){
+            m=1;
+            while(m<=anchoCuadricula && bEncontrado==false){  
+                if(matriz[k][m]==puntoB){
+                    bVertical=k;
+                    bHorizontal=m;
+                    bEncontrado=true;
+                }
+                m++;
+            }
+            k++;
+        }
+        
+        distancia = Math.abs(bVertical-aVertical)+Math.abs(bHorizontal-aHorizontal)-1;   
+         
+        return distancia;
+    }
+
+    
+
     
     public static void crearEnlacesPrimarios(){
-        System.out.println("Creando enlaces primarios");
-        int numColumnas=anchoCuadricula/4;
-        System.out.println("numColumnas: "+numColumnas);
-        
+        int numColumnas=anchoCuadricula/4;        
         for(int i=1; i<=numColumnas; i++){
+            if(!columnaVacia(i)){
                     enlazarColumna(i);
+            }
         }
     }
     
@@ -291,9 +508,9 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         }     
         
         if(vacia==false){
-            System.out.println("Columna #"+numColumna+" no vacía.");
+            System.out.println("Columna no vacía: #"+numColumna);
         }else{
-             System.out.println("Columna #"+numColumna+" vacía.");
+             System.out.println("Columna vacía: #"+numColumna);
         }
         
         return vacia;
@@ -310,10 +527,8 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                 if(matriz[i][j]!=0){
                     if(p==null){
                         p=firstIteracion.getNodo(matriz[i][j]);
-                        System.out.println("p es igual a "+p.getId());
                     }else{         
                         q=firstIteracion.getNodo(matriz[i][j]);
-                        System.out.println("q es igual a "+q.getId());
                         p.addEnlace(q);
                         q.addEnlace(p);
                         p=q;           
@@ -337,10 +552,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                     for(int k=1; k<=altoCuadricula; k++){ 
                         for(int m=1*columnaDerecha*4-3; m<=4*columnaDerecha; m++){             
                             if(matriz[k][m]!=0){
-                           //     System.out.println("Punto A: "+matriz[i][j]);
-                           //     System.out.println("Punto B: "+matriz[k][m]);
                                 distancia = Math.abs(k-i)+Math.abs(m-j)-1;   
-                           //     System.out.println("Distancia: "+distancia);
                                 if(distancia<menorDistancia){
                                     menorDistancia = distancia;
                                     puntoA = matriz[i][j];
@@ -360,6 +572,30 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         p.addEnlace(q);
         q.addEnlace(p);
         
+    }
+
+    
+    
+    public static void serializarEnlaces() {
+        Nodo p = firstIteracion.firstNodo;
+        for(int i=1; i<=firstIteracion.getNumNodos(); i++){   
+            Enlace e = p.firstEnlace;
+            int c = 1;       
+            do{
+                e.num = c;
+                c++;
+                e=e.nextEnlace;
+            }while(e!=null);
+            p=p.nextNodo;
+        }
+    }
+
+    Iteracion getIteracion(int i) {
+        Iteracion p = firstIteracion;
+        while(p.num!=i){
+            p=p.nextIteracion;
+        }
+        return p;
     }
     
     
