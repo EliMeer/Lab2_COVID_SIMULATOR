@@ -306,6 +306,8 @@ public class GUI {
         jbIniciar.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent e) {
                                     
+                                    if(rbConMascarilla.isSelected() || rbSinMascarilla.isSelected() || rbAleatorio.isSelected()){
+                                    
                                     if(rbConMascarilla.isSelected()){
                                         sim.opcionMascarilla=0;
                                     }
@@ -327,7 +329,7 @@ public class GUI {
                                     }
                                     
                                     
-                                    shapePanel2 = new ShapePanel(sim.firstIteracion);
+                                    shapePanel2 = new ShapePanel(sim.firstIteracion.getIteracion(1));
                                     if(shapePanel2.getParent() == margen){
                                         System.out.println("ENTRÓ AL CONDICIONAAAAAAL");
                                         margen.remove(shapePanel2);
@@ -341,14 +343,17 @@ public class GUI {
                                     shapePanel.repaint();
                                     
                                     }
-                              //  }
+                                 }
                             }); 
         
          //ACTION LISTENER MEDIA 
         jbSiguiente.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         
-                        margen.remove(shapePanel);
+                            System.out.println("mostrarIteracion: "+sim.mostrarIteracion);
+                        
+                                    if(sim.mostrarIteracion<sim.getNumIteraciones()){
+                                     margen.remove(shapePanel);
                                     
                                     if(shapePanel2 != null){
                                         margen.remove(shapePanel2);
@@ -362,11 +367,17 @@ public class GUI {
                                     if(shapePanel2.getParent() == margen){   
                                         margen.remove(shapePanel2);
                                     }
+                                    
                                     margen.add(shapePanel2);
                                     margen.revalidate();
                                     margen.repaint();
                                     shapePanel.revalidate();
                                     shapePanel.repaint();
+                                    
+                                    
+                                    }
+                                    
+                                    
                         
                     }
                 }); 
@@ -375,7 +386,7 @@ public class GUI {
         //ACTION LISTENER ANTERIOR ITERACIÓN
         jbAnterior.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent e) {
-                                    
+                                    if(sim.mostrarIteracion>1){
                                     margen.remove(shapePanel);
                                     
                                     if(shapePanel2 != null){
@@ -397,7 +408,7 @@ public class GUI {
                                     shapePanel.repaint();
                                     
                                     }
-                              
+                                }
                             }); 
         
 
@@ -573,7 +584,7 @@ public class GUI {
              }
                           //g2d.setColor(Color.red);
 
-         //   g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+            g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
             
             
 
