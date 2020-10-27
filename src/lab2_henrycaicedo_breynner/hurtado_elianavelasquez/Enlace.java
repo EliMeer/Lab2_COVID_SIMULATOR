@@ -12,6 +12,7 @@ package lab2_henrycaicedo_breynner.hurtado_elianavelasquez;
 public class Enlace {
     Nodo nodo;
     Enlace nextEnlace;
+    int num;
 
 
     public Enlace(Nodo nodo) {
