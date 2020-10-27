@@ -18,20 +18,34 @@ public class Nodo extends Ellipse2D.Double{
     boolean tapabocas;
     boolean infectado;
     int id;
-    static int contId=1;
     Enlace firstEnlace;
-    int getNumEnlaces;
+    double diametro;
+    boolean yaFueRecorrido;
 
-    public Nodo(Nodo nextNodo, boolean tapabocas, boolean infectado, double x, double y, double diametro) {
+    public Nodo(Nodo nextNodo, boolean tapabocas, boolean infectado, double x, double y, double diametro, int id) {
         super(x, y, diametro, diametro);
         this.nextNodo = nextNodo;
         this.tapabocas = tapabocas;
         this.infectado = infectado;
-        this.id = contId++;
+        this.id = id;
+        this.diametro = diametro;
+        this.yaFueRecorrido=false;
     }
 
     public void addEnlace(Nodo q) {
         Enlace e = new Enlace(q);
+        if(firstEnlace==null){
+            firstEnlace = e;
+        }else{
+           Enlace p = firstEnlace;
+           while(p.nextEnlace != null){
+               p = p.nextEnlace;
+           }
+           p.nextEnlace = e;
+        }
+    }
+    
+    public void addEnlace(Enlace e) {
         if(firstEnlace==null){
             firstEnlace = e;
         }else{
@@ -49,15 +63,33 @@ public class Nodo extends Ellipse2D.Double{
         Enlace p = firstEnlace;
             do{
                 c++;
-            }while(p!=null);
             p = p.nextEnlace;
+            }while(p!=null);
+        
+
         }
         return c;
     }
 
-    String getId() {
+    int getId() {
+        return id;
+    }
+
+    Enlace getEnlace(int i) {
+        Enlace e = firstEnlace;
+        
+        while(e.num!=i){
+            e = e.nextEnlace;
+        }
+        
+        return e;
+    }
+
+    String getIdString() {
         return Integer.toString(id) ;
     }
+
+    
     
     
     
