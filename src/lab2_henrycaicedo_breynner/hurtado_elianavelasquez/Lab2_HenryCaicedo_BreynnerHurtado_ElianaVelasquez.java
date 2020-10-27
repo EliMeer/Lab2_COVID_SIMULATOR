@@ -20,7 +20,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     final static int anchoSim=680;
     final static int altoSim=510;
     static Iteracion firstIteracion;
-    static int numNodos = 20, anchoCuadricula, altoCuadricula, opcionMascarilla=2;
+    static int numNodos = 10, anchoCuadricula, altoCuadricula, opcionMascarilla=1;
     static int[][] matriz;
     static int mostrarIteracion=1;
 
@@ -46,19 +46,12 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         crearEnlacesPrimarios();
         crearEnlacesSecundarios(); 
         serializarEnlaces();
-        dibujarMatriz();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-        addIteracion();
-
+        dibujarMatriz();     
+        while(!todosInfectados()){
+            addIteracion();
+        }
+        
+    
   
         
         /*
@@ -88,15 +81,21 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     
   
     public void iniciar(){
+                                
                                 mostrarIteracion=1;
+                                Iteracion.numIteracion=1;
                                 calcProporcion(numNodos);
                                 matriz = new int[altoCuadricula+1][anchoCuadricula+1];
                                 crearPrimeraIteracion();    
                                 crearEnlacesPrimarios();
                                 crearEnlacesSecundarios(); 
                                 serializarEnlaces();
-                                dibujarMatriz();
-                                addIteracion();
+                                dibujarMatriz();    
+                                
+                                while(!todosInfectados()){
+                                    addIteracion();
+                                };
+                                System.out.println("Número de iteraciones: "+getNumIteraciones());
     }
     
     public static void calcProporcion(int numNodos){
@@ -273,12 +272,12 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         //Duplicar enlaces
         Nodo q = anteriorIteracion.firstNodo;
         for(int i=1; i<=firstIteracion.getNumNodos(); i++){
-            
+            /*
             System.out.println("=============================");
             System.out.println("Duplicando enlaces de "+i);
             System.out.println("Número de enlaces: "+q.getNumEnlaces());
             System.out.println("Buscando nodo "+i);
-
+*/
             Nodo m = nuevaIteracion.getNodo(i);
          
             
@@ -299,7 +298,8 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
     private static void ejecutarVirusDos(Iteracion nuevaIteracion) {
-       
+        Random r = new Random();
+        
         for(int i=1; i<=nuevaIteracion.getNumNodos(); i++){
             
             Nodo transmisor = nuevaIteracion.getNodo(i);
@@ -315,8 +315,95 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                     //Si este enlace no está infectado, se procede a evaluar las probabilidades
                     if(receptor.infectado == false){
                         
-                        receptor.infectado=true;
-                        receptor.yaFueRecorrido=true;
+                        //Generar número entre 1 y 10 para usar los porcentajes dados
+                        int probabilidad = r.nextInt(10) + 1;
+                        System.out.println("Probabilidad: "+probabilidad);
+                        int distancia = calcularDistancia(transmisor, receptor);
+                        System.out.println("Distancia entre "+transmisor.getIdString()+" y "+receptor.getIdString()+": "+distancia);
+                        if(distancia>2){
+                            if(transmisor.tapabocas==false){
+                                if(receptor.tapabocas==false){
+                                    if(probabilidad<=8){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                }
+                                if(receptor.tapabocas==true){
+                                    if(probabilidad<=4){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                }                              
+                            }else{
+                                if(receptor.tapabocas==false){
+                                    if(probabilidad<=3){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                }
+                                if(receptor.tapabocas==true){
+                                    if(probabilidad<=2){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                } 
+                                                             
+                            }       
+                        }else{
+                            if(transmisor.tapabocas==false){
+                                if(receptor.tapabocas==false){
+                                    if(probabilidad<=9){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }            
+                                }
+                                if(receptor.tapabocas==true){
+                                    if(probabilidad<=6){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                }                              
+                            }else{
+                                if(receptor.tapabocas==false){
+                                    if(probabilidad<=4){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                }
+                                if(receptor.tapabocas==true){
+                                    if(probabilidad<=3){
+                                    receptor.infectado=true;
+                                    receptor.yaFueRecorrido=true;  
+                                    }
+                                } 
+                                                             
+                            } 
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        }
+                        
+                        
                         
                     }
                     
@@ -591,11 +678,44 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
 
     Iteracion getIteracion(int i) {
+        System.out.println("Buscando iteracion "+i);
         Iteracion p = firstIteracion;
-        while(p.num!=i){
+        while(p.num!=i ){
             p=p.nextIteracion;
         }
         return p;
+    }
+    
+    public static boolean todosInfectados(){
+        boolean todosInfectados=true;
+        
+        Iteracion i = firstIteracion;
+        while(i.nextIteracion!=null){
+            i = i.nextIteracion;
+        }
+        
+        Nodo p = i.firstNodo;
+        
+        do{            
+            if(p.infectado==false){
+                todosInfectados=false;
+            } 
+            p=p.nextNodo;
+        }while(p!=null && todosInfectados==true);
+        
+        return todosInfectados;
+    }
+
+    int getNumIteraciones() {
+        int c = 0;
+        if(firstIteracion!=null){
+        Iteracion i = firstIteracion;
+        do{
+            c++;
+            i=i.nextIteracion;
+        }while(i!=null);
+        }
+        return c;
     }
     
     
