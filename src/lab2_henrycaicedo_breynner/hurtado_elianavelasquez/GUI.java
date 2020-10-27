@@ -281,16 +281,30 @@ public class GUI {
         pane.add(rightPanel, "East");
         
         //Paginación
-        JPanel paginacion = new JPanel();
+        JPanel paginacion = new JPanel(new GridLayout(1,3));
         paginacion.setPreferredSize(new Dimension(704, 69));
         paginacion.setBorder(BorderFactory.createLineBorder(Color.gray));
         rightPanel.add(paginacion, BorderLayout.SOUTH);
+        JPanel jpIzq = new JPanel();
+        JPanel jpDer = new JPanel();
+        //Barra de reproducción
+        JPanel jpMediaControl = new JPanel(new GridLayout(1,3));
+        JButton jbAnterior = new JButton("<");
+        JButton jbPlayPause = new JButton("D");
+        JButton jbSiguiente = new JButton(">");
+        jpMediaControl.add(jbAnterior);
+        jpMediaControl.add(jbPlayPause);
+        jpMediaControl.add(jbSiguiente);
+        paginacion.add(jpIzq);
+        paginacion.add(jpMediaControl);
+        paginacion.add(jpDer);
+        
+       
+   
         
         //ACTION LISTENER BOTÓN INICIAR SIMULACIÓN
         jbIniciar.addActionListener(new ActionListener() {
                                 public void actionPerformed(ActionEvent e) {
-                                    
-                                   // if(rbConMascarilla.isSelected() || rbConMascarilla.isSelected() || rbAleatorio.isSelected()){
                                     
                                     if(rbConMascarilla.isSelected()){
                                         sim.opcionMascarilla=0;
@@ -321,7 +335,6 @@ public class GUI {
                                         System.out.println("ENTRÓ AL ELSEEEEEEEEE");
                                     }
                                     margen.add(shapePanel2);
-                                    dibujarMatriz();
                                     margen.revalidate();
                                     margen.repaint();
                                     shapePanel.revalidate();
@@ -331,7 +344,77 @@ public class GUI {
                               //  }
                             }); 
         
+         //ACTION LISTENER MEDIA 
+        jbSiguiente.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        
+                        margen.remove(shapePanel);
+                                    
+                                    if(shapePanel2 != null){
+                                        margen.remove(shapePanel2);
+                                    }
+                                    
+                                    sim.mostrarIteracion++;
+                                    
+                                    shapePanel2 = new ShapePanel(sim.getIteracion(sim.mostrarIteracion));
+                                    System.out.println("Iteracion "+sim.getIteracion(sim.mostrarIteracion).num);
+                                    
+                                    if(shapePanel2.getParent() == margen){   
+                                        margen.remove(shapePanel2);
+                                    }
+                                    margen.add(shapePanel2);
+                                    margen.revalidate();
+                                    margen.repaint();
+                                    shapePanel.revalidate();
+                                    shapePanel.repaint();
+                        
+                    }
+                }); 
+        
+        
+        //ACTION LISTENER ANTERIOR ITERACIÓN
+        jbAnterior.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    
+                                    margen.remove(shapePanel);
+                                    
+                                    if(shapePanel2 != null){
+                                        margen.remove(shapePanel2);
+                                    }
+                                    
+                                    sim.mostrarIteracion--;
+                                    
+                                    shapePanel2 = new ShapePanel(sim.getIteracion(sim.mostrarIteracion));
+                                    System.out.println("Iteracion "+sim.getIteracion(sim.mostrarIteracion).num);
+                                    
+                                    if(shapePanel2.getParent() == margen){   
+                                        margen.remove(shapePanel2);
+                                    }
+                                    margen.add(shapePanel2);
+                                    margen.revalidate();
+                                    margen.repaint();
+                                    shapePanel.revalidate();
+                                    shapePanel.repaint();
+                                    
+                                    }
+                              
+                            }); 
+        
+
+        
+        //ACTION LISTENER PLAY/PAUSE
+        jbPlayPause.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    
+                                   
+                                    
+                                    }
+                              //  }
+                            }); 
+        
     }
+    
+    
     
     
     
@@ -490,7 +573,9 @@ public class GUI {
              }
                           //g2d.setColor(Color.red);
 
-            //g2d.drawString(p.getId(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+         //   g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+            
+            
 
      
   
@@ -498,7 +583,7 @@ public class GUI {
              p = p.nextNodo;
         }while(p!=null);
         
-       
+       g2d.drawString("Iteración "+iteracion.num, 20, 40);
 
     }
 
