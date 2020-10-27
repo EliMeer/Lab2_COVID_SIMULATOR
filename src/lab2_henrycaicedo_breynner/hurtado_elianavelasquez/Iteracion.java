@@ -47,6 +47,20 @@ public class Iteracion {
         return p;
     }
 
+    int getNumNodos() {
+        
+        int c=0;
+        if(this.firstNodo!=null){
+            Nodo p = this.firstNodo;
+            c++;
+            while(p.nextNodo!=null){
+                p=p.nextNodo;
+                c++;
+            }
+        }
+        return c;
+    }
+
 
     
     
