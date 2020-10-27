@@ -584,7 +584,7 @@ public class GUI {
              }
                           //g2d.setColor(Color.red);
 
-            g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+            //g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
             
             
 
