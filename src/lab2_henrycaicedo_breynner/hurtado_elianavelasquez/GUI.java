@@ -530,31 +530,86 @@ public class GUI {
             
         }while(p!=null);        
                 p = iteracion.firstNodo;
-   
+    
+                
+            //Dibujar nodos
         do{
-             if(p.infectado==true){
+
+            if(!p.yaFueDibujado){
+            if(p.infectado==true){
+                if(p.seleccionado){
+                Enlace e = p.firstEnlace;
+                 do{
+                     if(!e.nodo.infectado){
+                         g2d.setColor(colorSano);
+                         g2d.fillOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
+                         g2d.setColor(Color.red);
+                         g2d.setStroke(new java.awt.BasicStroke(3));
+                         g2d.drawOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
+                         e.nodo.yaFueDibujado=true;
+                     }
+                     e = e.nextEnlace;
+                 }while(e!=null);
+                }
                 g2d.setColor(colorInfectado);
              }else{
                 g2d.setColor(colorSano);
              }
-             
+     
              g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
              
-             if(p.seleccionado){
-                 g2d.setColor(Color.blue);
-                 
-             }else{
-                 g2d.setColor(Color.black);
-             }
-             
-             g2d.setStroke(new java.awt.BasicStroke(3));
                 
              if(p.tapabocas==true){
+                g2d.setColor(Color.black);
+                g2d.setStroke(new java.awt.BasicStroke(3));
                 g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
-             }           
+             }  
+                
+            }
+             
+             /*
+            if(p.seleccionado){
+                if(p.infectado){
+                Enlace e = p.firstEnlace;
+                 do{
+                     if(!e.nodo.infectado){
+                         g2d.setColor(Color.red);
+                     g2d.setStroke(new java.awt.BasicStroke(3));
+                     g2d.drawOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
+                     }
+                     e = e.nextEnlace;
+                 }while(e!=null);
+                 g2d.setColor(colorInfectado);
+            }else{
+                if(p.tapabocas){
+                g2d.setColor(Color.blue);
+                g2d.setStroke(new java.awt.BasicStroke(3));
+                }
+                g2d.setColor(colorSano);     
+            }    
+                
+                g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+                
+            }
+            */
+            
+            
+            
+            
+            
+            
+              
+             
             //g2d.setColor(Color.red);
             //g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+            
              p = p.nextNodo;
+        }while(p!=null);
+        
+        p = iteracion.firstNodo;
+        do{
+            p.yaFueDibujado=false;
+            p=p.nextNodo;
         }while(p!=null);
         g2d.setColor(Color.black);
         g2d.drawString("Iteración "+iteracion.num, 20, 40);
