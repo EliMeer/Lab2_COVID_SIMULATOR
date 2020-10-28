@@ -20,7 +20,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     final static int anchoSim=680;
     final static int altoSim=510;
     static Iteracion firstIteracion;
-    static int numNodos = 10, anchoCuadricula, altoCuadricula, opcionMascarilla=1;
+    static int numNodos = 10, anchoCuadricula, altoCuadricula, opcionMascarilla=2;
     static int[][] matriz;
     static int mostrarIteracion=1;
 
