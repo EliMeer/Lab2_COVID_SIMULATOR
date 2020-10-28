@@ -541,11 +541,16 @@ public class GUI {
                 Enlace e = p.firstEnlace;
                  do{
                      if(!e.nodo.infectado){
+                         g2d.setStroke(new java.awt.BasicStroke(3));
+                         g2d.setColor(Color.red);
+                         g2d.drawLine((int)(p.x+p.height/2), (int)(p.y+p.height/2), (int)(e.nodo.x+p.height/2), (int)(e.nodo.y+p.height/2)); 
+                         g2d.setStroke(new java.awt.BasicStroke());
                          g2d.setColor(colorSano);
                          g2d.fillOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
                          g2d.setColor(Color.red);
-                         g2d.setStroke(new java.awt.BasicStroke(3));
+                         g2d.setStroke(new java.awt.BasicStroke(4));
                          g2d.drawOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
+                         
                          e.nodo.yaFueDibujado=true;
                      }
                      e = e.nextEnlace;
