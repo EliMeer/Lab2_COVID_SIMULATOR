@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -429,6 +430,9 @@ public class GUI {
     
     
     
+    
+    
+    
     static class ShapePanel extends JPanel {
         
         
@@ -436,14 +440,43 @@ public class GUI {
     private Dimension dim = new Dimension(anchoSim, altoSim);
     Iteracion iteracion;
 
- 
+        static boolean arrastrado=false;
+    
     public ShapePanel(Iteracion iteracion) {
          
         this.iteracion=iteracion;
-
-
-        addMouseListener(new MouseAdapter() {
+        
+        
+        addMouseMotionListener(new MouseAdapter() {
+            public void mouseMoved(MouseEvent me) {
+                arrastrado=false;
+                super.mouseMoved(me);
+                Nodo p = iteracion.firstNodo;
+                do{                  
+                    if (p.contains(me.getPoint())) {                      
+                        System.out.println(p.id+": ("+p.x+","+p.y+")");
+                        p.seleccionado=true;
+                    }else{
+                        p.seleccionado=false;
+                    }
+                    p = p.nextNodo;     
+                    if(shapePanel2!=null)shapePanel2.repaint();
+                }while(p!=null);                 
+            }
+            public void mouseExited(MouseEvent e) {
+                System.out.println("MOUSE ARRASTRADOOOOOOOOOO");
+                arrastrado=true;
+            }
             
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                System.out.println("MOUSE ARRASTRADOOOOOOOOOO");
+                arrastrado=true;
+            }
+        });
+        
+        addMouseListener(new MouseAdapter() {
+              
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
@@ -455,6 +488,7 @@ public class GUI {
                         System.out.print("Enlaces: ");
                             if(p.firstEnlace != null){
                                 Enlace e = p.firstEnlace;
+                                
                                     do{
                                         System.out.print(e.nodo.id+", "); 
                                         e = e.nextEnlace;
@@ -468,82 +502,8 @@ public class GUI {
             }        
         });
         
-        addMouseListener(new MouseAdapter() {
-            
-            @Override
-            public void mouseEntered( MouseEvent me ) {
-                super.mouseEntered(me);
-                Nodo p = iteracion.firstNodo;
-                do{                  
-                    //Revisa si se hizo clic dentro del área del círculo
-                    if (p.contains(me.getX(), me.getY())) {                      
-                        System.out.println("Mouse dentro de "+p.id);                 
-                    }
-                    p = p.nextNodo;                 
-                }while(p!=null);             
-            }        
-        });
-        
-        
-        
-        addMouseListener(new MouseAdapter() {
-            
-            @Override
-                public void mouseMoved(MouseEvent me) {
-                    System.out.println("lol");
-                    
-                        Nodo p = iteracion.firstNodo;
-                    
-                        int mx = me.getX();
-                        int my = me.getY();
-                        
-                        do{ 
-                        if (mx > p.x && mx < p.x + p.width && my > p.y
-                                && my < p.y + p.height) {
-                            System.out.println("yes");
-                        } else {
-                            System.out.println("no");
-                        }
-                            p = p.nextNodo;                 
-                    }while(p!=null);  
-                        
-                }
-                   
-        });
-        
-       
-        /*
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                super.mouseClicked(me);
-                for (Nodo n : nodos) {                    
-                    //Revisa si se hizo clic dentro del área del círculo
-                    if (n.contains(me.getPoint())) {                      
-                        System.out.println(n.id);
-                    }
-                }
-            }        
-        });
-        */
-        //setBorder(BorderFactory.createLineBorder(Color.red));
-
         setBackground(Color.WHITE);
         
-        /*
-        addMouseListener( new MouseAdapter() {
-            public void mouseEntered( MouseEvent e ) {
-                super.mouseEntered(e);
-                for (Nodo n : nodos) { 
-                    
-                    //Revisa si se el cursor está dentro del área del círculo
-                    if (n.contains(e.getPoint())) {                                  
-                        System.out.println("Mouse dentro de "+n.id);
-                    }
-                }
-            }
-        });
-        */
     }
 
     
@@ -552,6 +512,7 @@ public class GUI {
         super.paintComponent(grphcs);
         Graphics2D g2d = (Graphics2D) grphcs;
         Nodo p = iteracion.firstNodo;
+        
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setStroke(new java.awt.BasicStroke(1));
          do{
@@ -572,29 +533,31 @@ public class GUI {
    
         do{
              if(p.infectado==true){
-             g2d.setColor(colorInfectado);
+                g2d.setColor(colorInfectado);
              }else{
-                 g2d.setColor(colorSano);
+                g2d.setColor(colorSano);
              }
+             
              g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
-             g2d.setColor(Color.black);
-             g2d.setStroke(new java.awt.BasicStroke(3));
-             if(p.tapabocas==true){
-             g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+             
+             if(p.seleccionado){
+                 g2d.setColor(Color.blue);
+                 
+             }else{
+                 g2d.setColor(Color.black);
              }
-                          //g2d.setColor(Color.red);
-
+             
+             g2d.setStroke(new java.awt.BasicStroke(3));
+                
+             if(p.tapabocas==true){
+                g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+             }           
+            //g2d.setColor(Color.red);
             //g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
-            
-            
-
-     
-  
-            
              p = p.nextNodo;
         }while(p!=null);
-        
-       g2d.drawString("Iteración "+iteracion.num, 20, 40);
+        g2d.setColor(Color.black);
+        g2d.drawString("Iteración "+iteracion.num, 20, 40);
 
     }
 
@@ -602,7 +565,7 @@ public class GUI {
     public Dimension getPreferredSize() {
         return dim;
     }  
-}
+        }
     
     
     public static void showGUI(Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
