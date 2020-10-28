@@ -21,6 +21,7 @@ public class Nodo extends Ellipse2D.Double{
     Enlace firstEnlace;
     double diametro;
     boolean yaFueRecorrido;
+    boolean seleccionado;
 
     public Nodo(Nodo nextNodo, boolean tapabocas, boolean infectado, double x, double y, double diametro, int id) {
         super(x, y, diametro, diametro);
@@ -30,6 +31,7 @@ public class Nodo extends Ellipse2D.Double{
         this.id = id;
         this.diametro = diametro;
         this.yaFueRecorrido=false;
+        this.seleccionado=false;
     }
 
     public void addEnlace(Nodo q) {
