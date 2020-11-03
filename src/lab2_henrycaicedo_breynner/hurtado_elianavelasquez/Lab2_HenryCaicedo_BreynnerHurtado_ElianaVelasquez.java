@@ -99,7 +99,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
     public static void calcProporcion(int numNodos){
-        int densidadNodos=8;
+        int densidadNodos=10;
         if(numNodos%densidadNodos != 0){
             anchoCuadricula = (numNodos/densidadNodos+1)*4;
             altoCuadricula = (numNodos/densidadNodos+1)*3;
@@ -317,9 +317,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                         
                         //Generar número entre 1 y 10 para usar los porcentajes dados
                         int probabilidad = r.nextInt(10) + 1;
-                        System.out.println("Probabilidad: "+probabilidad);
                         int distancia = calcularDistancia(transmisor, receptor);
-                        System.out.println("Distancia entre "+transmisor.getIdString()+" y "+receptor.getIdString()+": "+distancia);
                         if(distancia>2){
                             if(transmisor.tapabocas==false){
                                 if(receptor.tapabocas==false){
@@ -440,56 +438,48 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                     if(receptor.infectado==false){
                         Random r = new Random();
                         int probabilidad = r.nextInt(10) + 1;
-                        System.out.println("Probabilidad: "+probabilidad);
+
                         int distancia = calcularDistancia(transmisor, receptor);
                         if(distancia>2){
                             if(transmisor.tapabocas==false && receptor.tapabocas==false){
                                 if(probabilidad<=8){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }
                             if(transmisor.tapabocas==false && receptor.tapabocas==true){
                                 if(probabilidad<=4){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }
                             if(transmisor.tapabocas==true && receptor.tapabocas==false){
                                 if(probabilidad<=3){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }
                             if(transmisor.tapabocas==true && receptor.tapabocas==true){
                                 if(probabilidad<=2){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }                      
                         }else{
                             if(transmisor.tapabocas==false && receptor.tapabocas==false){
                                 if(probabilidad<=9){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }
                             if(transmisor.tapabocas==false && receptor.tapabocas==true){
                                 if(probabilidad<=6){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }
                             if(transmisor.tapabocas==true && receptor.tapabocas==false){
                                 if(probabilidad<=40){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }
                             if(transmisor.tapabocas==true && receptor.tapabocas==true){
                                 if(probabilidad<=30){
                                     receptor.infectado=true;
-                                    System.out.println(receptor.id+" Infectado");
                                 }
                             }                 
                         }  
@@ -717,7 +707,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         }
         return c;
     }
-    
+       
     
       
 }
