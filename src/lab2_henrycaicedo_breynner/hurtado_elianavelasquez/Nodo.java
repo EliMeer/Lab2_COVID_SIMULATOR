@@ -78,6 +78,9 @@ public class Nodo extends Ellipse2D.Double{
     }
 
     Enlace getEnlace(int i) {
+        
+      // System.out.println("Obteniendo enlace "+i+" de "+this.getIdString());
+
         Enlace e = firstEnlace;
         
         while(e.num!=i){
@@ -91,10 +94,10 @@ public class Nodo extends Ellipse2D.Double{
         return Integer.toString(id) ;
     }
 
-    
-    
-    
-    
+   
+
+   
+
     
     
 
