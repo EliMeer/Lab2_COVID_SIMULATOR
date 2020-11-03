@@ -56,6 +56,8 @@ public class GUI {
         public static ShapePanel shapePanel2;
         static final Color colorInfectado = new Color(255,160,160);
         static final Color colorSano = new Color(191, 186, 255);
+        static final Color colorInfectadoSeleccionado = new Color(255, 0, 0);
+        static final Color colorSanoSeleccionado = new Color(255, 174, 0);
     
     
     private static void addComponentsToPane(Container pane, Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez sim) {
@@ -332,10 +334,9 @@ public class GUI {
                                     
                                     shapePanel2 = new ShapePanel(sim.firstIteracion.getIteracion(1));
                                     if(shapePanel2.getParent() == margen){
-                                        System.out.println("ENTRÓ AL CONDICIONAAAAAAL");
                                         margen.remove(shapePanel2);
                                     }else{
-                                        System.out.println("ENTRÓ AL ELSEEEEEEEEE");
+                                        
                                     }
                                     margen.add(shapePanel2);
                                     margen.revalidate();
@@ -351,7 +352,6 @@ public class GUI {
         jbSiguiente.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         
-                            System.out.println("mostrarIteracion: "+sim.mostrarIteracion);
                         
                                     if(sim.mostrarIteracion<sim.getNumIteraciones()){
                                      margen.remove(shapePanel);
@@ -363,7 +363,7 @@ public class GUI {
                                     sim.mostrarIteracion++;
                                     
                                     shapePanel2 = new ShapePanel(sim.getIteracion(sim.mostrarIteracion));
-                                    System.out.println("Iteracion "+sim.getIteracion(sim.mostrarIteracion).num);
+
                                     
                                     if(shapePanel2.getParent() == margen){   
                                         margen.remove(shapePanel2);
@@ -397,7 +397,6 @@ public class GUI {
                                     sim.mostrarIteracion--;
                                     
                                     shapePanel2 = new ShapePanel(sim.getIteracion(sim.mostrarIteracion));
-                                    System.out.println("Iteracion "+sim.getIteracion(sim.mostrarIteracion).num);
                                     
                                     if(shapePanel2.getParent() == margen){   
                                         margen.remove(shapePanel2);
@@ -464,13 +463,11 @@ public class GUI {
                 }while(p!=null);                 
             }
             public void mouseExited(MouseEvent e) {
-                System.out.println("MOUSE ARRASTRADOOOOOOOOOO");
                 arrastrado=true;
             }
             
             @Override
             public void mouseDragged(MouseEvent e) {
-                System.out.println("MOUSE ARRASTRADOOOOOOOOOO");
                 arrastrado=true;
             }
         });
@@ -485,6 +482,7 @@ public class GUI {
                     //Revisa si se hizo clic dentro del área del círculo
                     if (p.contains(me.getPoint())) {                      
                         System.out.println(p.id+": ("+p.x+","+p.y+")");
+                        System.out.println("firstEnlace: "+p.firstEnlace.nodo.getIdString());
                         System.out.print("Enlaces: ");
                             if(p.firstEnlace != null){
                                 Enlace e = p.firstEnlace;
@@ -532,9 +530,10 @@ public class GUI {
                 p = iteracion.firstNodo;
     
                 
-            //Dibujar nodos
+        //DOBUJAR NODOS
         do{
 
+                      
             if(!p.yaFueDibujado){
             if(p.infectado==true){
                 if(p.seleccionado){
@@ -542,12 +541,12 @@ public class GUI {
                  do{
                      if(!e.nodo.infectado){
                          g2d.setStroke(new java.awt.BasicStroke(3));
-                         g2d.setColor(Color.red);
+                         g2d.setColor(colorInfectadoSeleccionado);
                          g2d.drawLine((int)(p.x+p.height/2), (int)(p.y+p.height/2), (int)(e.nodo.x+p.height/2), (int)(e.nodo.y+p.height/2)); 
                          g2d.setStroke(new java.awt.BasicStroke());
                          g2d.setColor(colorSano);
                          g2d.fillOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
-                         g2d.setColor(Color.red);
+                         g2d.setColor(colorInfectadoSeleccionado);
                          g2d.setStroke(new java.awt.BasicStroke(4));
                          g2d.drawOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
                          
@@ -558,6 +557,108 @@ public class GUI {
                 }
                 g2d.setColor(colorInfectado);
              }else{
+                if(p.seleccionado){
+                        
+                    
+                    //DIBUJAR ARISTAS DEL CAMINO
+                    Nodo n = p;
+                    //n se va a ir desplazando y dibujando el camino con los nodos
+                    Nodo anteriorNodo = null;
+                    System.out.println("=================================================");
+                    System.out.println("P: "+p.getIdString());
+                    
+                    while(!n.infectado){
+                        
+                        System.out.println("N: "+n.getIdString());
+                        
+                        Enlace e;
+                        int c;
+                        int menorDistancia = Integer.MAX_VALUE;
+                        int numEnlaceMenorDistancia=0;
+                        
+                       
+                        
+                        for(int i = 1; i<=n.getNumEnlaces(); i++){
+                            e = n.getEnlace(i);
+                            System.out.println("Revisando enlace "+i+" (Nodo "+n.getIdString()+")");
+                            if(anteriorNodo==null || e.nodo != anteriorNodo){
+                            c = e.distanciaHastaNodoInfectado(n);
+                                System.out.println("Distancia desde "+e.nodo.getIdString()+":  "+c);
+                            if(c<menorDistancia && c>=0){   
+                                menorDistancia = c;
+                                numEnlaceMenorDistancia = e.getNum();
+                            }
+                                System.out.println("Menor distancia:  "+menorDistancia);
+                            }
+                        }
+                        
+                  
+                        anteriorNodo = n;
+                        e = n.getEnlace(numEnlaceMenorDistancia);
+                        n = e.nodo;
+                        
+                                    
+                        //DIBUJAR N
+                         g2d.setStroke(new java.awt.BasicStroke(3));
+                         g2d.setColor(colorSanoSeleccionado);
+                         g2d.drawLine((int)(anteriorNodo.x+anteriorNodo.height/2), (int)(anteriorNodo.y+anteriorNodo.height/2), (int)(n.x+anteriorNodo.height/2), (int)(n.y+anteriorNodo.height/2));  
+                    }
+                    
+                    //DIBUJAR ARISTAS DEL CAMINO
+                    n = p;
+                    //n se va a ir desplazando y dibujando el camino con los nodos
+                    anteriorNodo = null;
+                    System.out.println("=================================================");
+                    System.out.println("P: "+p.getIdString());
+                    
+                    while(!n.infectado){
+                        
+                        System.out.println("N: "+n.getIdString());
+                        
+                        Enlace e;
+                        int c;
+                        int menorDistancia = Integer.MAX_VALUE;
+                        int numEnlaceMenorDistancia=0;
+                        
+                       
+                        
+                        for(int i = 1; i<=n.getNumEnlaces(); i++){
+                            e = n.getEnlace(i);
+                            System.out.println("Revisando enlace "+i+" (Nodo "+n.getIdString()+")");
+                            if(anteriorNodo==null || e.nodo != anteriorNodo){
+                            c = e.distanciaHastaNodoInfectado(n);
+                                System.out.println("Distancia desde "+e.nodo.getIdString()+":  "+c);
+                            if(c<menorDistancia && c>=0){   
+                                menorDistancia = c;
+                                numEnlaceMenorDistancia = e.getNum();
+                            }
+                                System.out.println("Menor distancia:  "+menorDistancia);
+                            }
+                        }
+                        
+                  
+                        anteriorNodo = n;
+                        e = n.getEnlace(numEnlaceMenorDistancia);
+                        n = e.nodo;
+                        
+                                    
+                        //DIBUJAR N
+                         g2d.setStroke(new java.awt.BasicStroke(3));
+                         g2d.setColor(colorSanoSeleccionado);
+                         g2d.setStroke(new java.awt.BasicStroke());
+                         g2d.setColor(colorSano);
+                         if(n.infectado)g2d.setColor(colorInfectado);
+                         g2d.fillOval((int)n.x, (int)n.y, (int)n.height, (int)n.width);
+                         g2d.setColor(colorSanoSeleccionado);
+                         g2d.setStroke(new java.awt.BasicStroke(4));
+                         g2d.drawOval((int)n.x, (int)n.y, (int)n.height, (int)n.width);
+                         n.yaFueDibujado=true;      
+                    }
+                    
+                    
+                    
+                }
+                
                 g2d.setColor(colorSano);
              }
      
@@ -569,44 +670,19 @@ public class GUI {
                 g2d.setStroke(new java.awt.BasicStroke(3));
                 g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
              }  
+             
+             if(p.seleccionado && !p.infectado){
+                 g2d.setColor(colorSanoSeleccionado);
+                g2d.setStroke(new java.awt.BasicStroke(4));
+                g2d.drawOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
+             }
+             
                 
             }
              
-             /*
-            if(p.seleccionado){
-                if(p.infectado){
-                Enlace e = p.firstEnlace;
-                 do{
-                     if(!e.nodo.infectado){
-                         g2d.setColor(Color.red);
-                     g2d.setStroke(new java.awt.BasicStroke(3));
-                     g2d.drawOval((int)e.nodo.x, (int)e.nodo.y, (int)e.nodo.height, (int)e.nodo.width);
-                     }
-                     e = e.nextEnlace;
-                 }while(e!=null);
-                 g2d.setColor(colorInfectado);
-            }else{
-                if(p.tapabocas){
-                g2d.setColor(Color.blue);
-                g2d.setStroke(new java.awt.BasicStroke(3));
-                }
-                g2d.setColor(colorSano);     
-            }    
-                
-                g2d.fillOval((int)p.x, (int)p.y, (int)p.height, (int)p.width);
-                
-            }
-            */
-            
-            
-            
-            
-            
-            
-              
-             
-            //g2d.setColor(Color.red);
-            //g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
+
+          // g2d.setColor(Color.black);
+          // g2d.drawString(p.getIdString(), (int)p.x+(int)p.height/2, (int)p.y+(int)p.height/2);
             
              p = p.nextNodo;
         }while(p!=null);
@@ -617,7 +693,7 @@ public class GUI {
             p=p.nextNodo;
         }while(p!=null);
         g2d.setColor(Color.black);
-        g2d.drawString("Iteración "+iteracion.num, 20, 40);
+        g2d.drawString("Iteración "+iteracion.num, 10, 10);
 
     }
 
