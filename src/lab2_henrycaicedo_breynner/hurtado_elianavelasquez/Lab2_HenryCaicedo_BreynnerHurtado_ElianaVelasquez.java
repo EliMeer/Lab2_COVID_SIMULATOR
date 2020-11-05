@@ -99,7 +99,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
     }
     
     public static void calcProporcion(int numNodos){
-        int densidadNodos=10;
+        int densidadNodos=8;
         if(numNodos%densidadNodos != 0){
             anchoCuadricula = (numNodos/densidadNodos+1)*4;
             altoCuadricula = (numNodos/densidadNodos+1)*3;
