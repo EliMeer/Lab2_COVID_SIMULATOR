@@ -107,7 +107,7 @@ public class GUI {
                 JLabel jlbCantidadNodos = new JLabel("Cantidad de nodos");
                 jlbCantidadNodos.setForeground(Color.black);
                 jlbCantidadNodos.setFont(new Font("Arial", Font.PLAIN, 18));
-                                panel2.setBorder(BorderFactory.createLineBorder(Color.black)); 
+                panel2.setBorder(BorderFactory.createLineBorder(Color.black)); 
 
                 panel2.add(jlbCantidadNodos); 
                 hGroup.addComponent(panel2);
@@ -241,20 +241,69 @@ public class GUI {
                contenidoMascarilla.add(rbSinMascarilla);
                contenidoMascarilla.add(rbAleatorio);
                
+               
+        //Información
+                JPanel panel7 = new JPanel();
+                panel7.setPreferredSize(new Dimension(290, 33));
+                panel7.setBackground(new Color(235, 238, 240));
+                JLabel jlbInfo = new JLabel("Información");
+                jlbInfo.setForeground(Color.black);
+                jlbInfo.setFont(new Font("Arial", Font.PLAIN, 18));
+                panel7.setBorder(BorderFactory.createLineBorder(Color.black)); 
+                panel7.add(jlbInfo); 
+                hGroup.addComponent(panel7);
+                vGroup.addComponent(panel7, GroupLayout.PREFERRED_SIZE,
+                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
+                vGroup.addGap(0);       
+                //Contenedor información
+                JPanel panel8 = new JPanel();
+                panel8.setBorder(BorderFactory.createLineBorder(Color.lightGray)); 
+                panel8.setPreferredSize(new Dimension(290, 43*3));
+                hGroup.addComponent(panel8);
+                vGroup.addComponent(panel8, GroupLayout.PREFERRED_SIZE,
+                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
+                vGroup.addGap(15);
+               
+                JPanel contenidoInfo = new JPanel() {
+
+                    @Override
+                    protected void paintComponent(Graphics grphcs) {
+                        super.paintComponent(grphcs);
+                        Graphics2D g = (Graphics2D) grphcs;
+                        int x=0, y=0;
+                        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        
+                        g.setStroke(new java.awt.BasicStroke(2));
+                        g.setColor(colorSano);
+                        g.fillOval(4+x, 10+y, 20, 20);            
+                        g.setColor(Color.BLACK);
+                      //  g.drawOval(4+x, 10+y, 20, 20);
+                        
+                        g.drawString("Sano - sin mascarilla", 35+x, 25+y);
+                        //setBackground(Color.WHITE);
+                    }
+                };
+                
+                contenidoInfo.setPreferredSize(new Dimension(290, 39*3));
+                
+                contenidoInfo.repaint();
+               
+                panel8.add(contenidoInfo);
+               
                //Botón de iniciar
-               JPanel panel7 = new JPanel();
+               JPanel panel9 = new JPanel();
                JLabel jlbFuenteIniciar = new JLabel();
                jlbFuenteIniciar.setFont(new Font("Arial", Font.PLAIN, 19));
 
                JButton jbIniciar = new JButton("Iniciar simulación");
                
                jbIniciar.setFont(jlbFuenteIniciar.getFont());
-               panel7.add(jbIniciar);
-               panel7.setPreferredSize(new Dimension(310, 55));
+               panel9.add(jbIniciar);
+               panel9.setPreferredSize(new Dimension(310, 55));
 
                jbIniciar.setPreferredSize(new Dimension(310, 50));
-               hGroup.addComponent(panel7);
-                vGroup.addComponent(panel7, GroupLayout.PREFERRED_SIZE,
+               hGroup.addComponent(panel9);
+                vGroup.addComponent(panel9, GroupLayout.PREFERRED_SIZE,
                 GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE);
                 vGroup.addGap(15);
                 
@@ -531,9 +580,7 @@ public class GUI {
     
                 
         //DOBUJAR NODOS
-        do{
-
-                      
+        do{                   
             if(!p.yaFueDibujado){
             if(p.infectado==true){
                 if(p.seleccionado){
