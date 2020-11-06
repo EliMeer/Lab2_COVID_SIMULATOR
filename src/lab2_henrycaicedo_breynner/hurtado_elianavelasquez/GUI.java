@@ -246,7 +246,7 @@ public class GUI {
                 JPanel panel7 = new JPanel();
                 panel7.setPreferredSize(new Dimension(290, 33));
                 panel7.setBackground(new Color(235, 238, 240));
-                JLabel jlbInfo = new JLabel("Información");
+                JLabel jlbInfo = new JLabel("Información de nodos");
                 jlbInfo.setForeground(Color.black);
                 jlbInfo.setFont(new Font("Arial", Font.PLAIN, 18));
                 panel7.setBorder(BorderFactory.createLineBorder(Color.black)); 
@@ -270,16 +270,27 @@ public class GUI {
                     protected void paintComponent(Graphics grphcs) {
                         super.paintComponent(grphcs);
                         Graphics2D g = (Graphics2D) grphcs;
-                        int x=0, y=0;
+                        int x=0, y=-6, separacion=30;
                         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        
                         
                         g.setStroke(new java.awt.BasicStroke(2));
                         g.setColor(colorSano);
-                        g.fillOval(4+x, 10+y, 20, 20);            
+                        g.fillOval(4+x, 10+y, 20, 20);
+                        g.fillOval(4+x, 10+y+separacion, 20, 20);
+                        g.setColor(colorInfectado);
+                        g.fillOval(4+x, 10+y+separacion*2, 20, 20);
+                        g.fillOval(4+x, 10+y+separacion*3, 20, 20);
                         g.setColor(Color.BLACK);
-                      //  g.drawOval(4+x, 10+y, 20, 20);
-                        
-                        g.drawString("Sano - sin mascarilla", 35+x, 25+y);
+                        g.drawOval(4+x, 10+y+separacion, 20, 20);
+                        g.drawOval(4+x, 10+y+separacion*3, 20, 20);
+                        g.setStroke(new java.awt.BasicStroke());
+                        Font font = g.getFont().deriveFont( 16.5f );
+                        g.setFont(font);
+                        g.drawString("Sano - sin mascarilla", 35+x, 26+y);
+                        g.drawString("Sano - con mascarilla", 35+x, 26+y+separacion);
+                        g.drawString("Contagiado - sin mascarilla", 35+x, 26+y+separacion*2);
+                        g.drawString("Contagiado - con mascarilla", 35+x, 26+y+separacion*3);
                         //setBackground(Color.WHITE);
                     }
                 };
