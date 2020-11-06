@@ -245,7 +245,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
             p.nextIteracion = nuevaIteracion;           
             duplicarUltimaIteracion(nuevaIteracion);  
             
-            ejecutarVirusDos(nuevaIteracion);
+            ejecutarVirus(nuevaIteracion);
             
                
     }
@@ -297,7 +297,7 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
         
     }
     
-    private static void ejecutarVirusDos(Iteracion nuevaIteracion) {
+    private static void ejecutarVirus(Iteracion nuevaIteracion) {
         Random r = new Random();
         
         for(int i=1; i<=nuevaIteracion.getNumNodos(); i++){
@@ -379,26 +379,6 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
                         
                         
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         }
                         
                         
@@ -412,92 +392,10 @@ public class Lab2_HenryCaicedo_BreynnerHurtado_ElianaVelasquez {
             }
        
         }
-        /*
-        Nodo p = nuevaIteracion.firstNodo;
-        do{
-            p.yaFueRecorrido=true;
-            p=p.nextNodo;
-        }while(p!=null);
-        */
+
         
     }
 
-    
-    private static void ejecutarVirus(Iteracion nuevaIteracion) {
-          
-        for(int i=1; i<=nuevaIteracion.getNumNodos(); i++){
-            
-            Nodo transmisor = nuevaIteracion.getNodo(i);
-            
-            if(transmisor.infectado==true && transmisor.yaFueRecorrido==false){      
-                     
-                for(int j=1; j<=transmisor.getNumEnlaces(); j++){
-                    
-                    Nodo receptor = transmisor.getEnlace(j).nodo;      
-                    
-                    if(receptor.infectado==false){
-                        Random r = new Random();
-                        int probabilidad = r.nextInt(10) + 1;
-
-                        int distancia = calcularDistancia(transmisor, receptor);
-                        if(distancia>2){
-                            if(transmisor.tapabocas==false && receptor.tapabocas==false){
-                                if(probabilidad<=8){
-                                    receptor.infectado=true;
-                                }
-                            }
-                            if(transmisor.tapabocas==false && receptor.tapabocas==true){
-                                if(probabilidad<=4){
-                                    receptor.infectado=true;
-                                }
-                            }
-                            if(transmisor.tapabocas==true && receptor.tapabocas==false){
-                                if(probabilidad<=3){
-                                    receptor.infectado=true;
-                                }
-                            }
-                            if(transmisor.tapabocas==true && receptor.tapabocas==true){
-                                if(probabilidad<=2){
-                                    receptor.infectado=true;
-                                }
-                            }                      
-                        }else{
-                            if(transmisor.tapabocas==false && receptor.tapabocas==false){
-                                if(probabilidad<=9){
-                                    receptor.infectado=true;
-                                }
-                            }
-                            if(transmisor.tapabocas==false && receptor.tapabocas==true){
-                                if(probabilidad<=6){
-                                    receptor.infectado=true;
-                                }
-                            }
-                            if(transmisor.tapabocas==true && receptor.tapabocas==false){
-                                if(probabilidad<=40){
-                                    receptor.infectado=true;
-                                }
-                            }
-                            if(transmisor.tapabocas==true && receptor.tapabocas==true){
-                                if(probabilidad<=30){
-                                    receptor.infectado=true;
-                                }
-                            }                 
-                        }  
-                        receptor.yaFueRecorrido = true; 
-                    } 
-                    
-                }              
-            }      
-        }
-        
-        /*
-          Nodo p = nuevaIteracion.firstNodo;
-          do{
-              p.yaFueRecorrido = false;
-              p = p.nextNodo;
-          }while(p!=null);
-          */
-    }
     
     private static int calcularDistancia(Nodo transmisor, Nodo receptor) {
         int distancia;
